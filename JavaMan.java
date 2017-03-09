@@ -39,10 +39,8 @@ public class JavaMan
   
   public static void access(String path)
   {
-    System.out.println(path);
     String filePath = home + path.replaceAll("\\.","\\"+Character.toString(File.separatorChar));
     filePath=filePath+".txt";
-    System.out.println(filePath);
     File inFile = new File(filePath);
     try {
       BufferedReader br = new BufferedReader(new FileReader(inFile));
@@ -61,7 +59,6 @@ public class JavaMan
     } catch (Exception E) {
       notRecognized(); // I realize this is a very general fix but if it doesnt conform to the exact format then it wont work and therefore this will show up.
     }
-    System.out.println(inFile.canRead() + " " + inFile.exists());
   }
   
   public static void update()
