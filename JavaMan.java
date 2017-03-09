@@ -5,9 +5,10 @@
   import java.io.File;
 public class JavaMan
 {
+  public static String home = "c:" + File.separatorChar;
   
   public static void main(String[] args) {
-   if(args==null || args[0].isEmpty())
+   if(args==null || args[0] == null)
    {
      notRecognized();
      return;
@@ -39,6 +40,12 @@ public class JavaMan
   public static void access(String path)
   {
     System.out.println(path);
+    String filePath = home + path.replaceAll("\\.","\\"+Character.toString(File.separatorChar));
+    filePath=filePath+".txt";
+        System.out.println(filePath);
+    File inFile = new File(filePath);
+    System.out.println(inFile.canRead() + " " + inFile.exists());
+    
   }
   
   public static void update()
