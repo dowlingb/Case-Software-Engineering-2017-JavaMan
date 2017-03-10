@@ -6,6 +6,9 @@
  * */
 import java.io.*;
 import java.time.LocalDateTime;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.MalformedURLException;
 
 public class Update
 {
@@ -41,9 +44,30 @@ elapsed sets the update flag accordingly
     downloadDocs();
   }
 
-  private static void checkInternetConnection()
+  /*
+  check internet connectivity to determine if updated documentation can be
+  downloaded
+  */
+  private static boolean checkInternetConnection()
   {
-
+    try
+    {
+      URL url = new URL("http://docs.oracle.com/javase/8/docs/api/");
+      try
+      {
+        URLConnection conn = url.openConnection();
+        conn.connect();
+      }catch(IOException cantconnect)
+      {
+        Debug.printv("Error: can't connect");
+        return false;
+      }
+    }catch(MalformedURLException malformedurl)
+    {
+      Debug.printv("Error: malformed URL");
+      System.exit(1);
+    }
+    return true;
   }
 
   private static void downloadDocs()
@@ -115,6 +139,9 @@ elapsed sets the update flag accordingly
   {
     checkAutoUpdateCondition();
     if(autoUpdate == true) //TODO: or manual user input
-      update(autoUpdate);
+    {
+      if(checkInternetConnection() == true)
+        update(autoUpdate);
+    }
   }
 }
