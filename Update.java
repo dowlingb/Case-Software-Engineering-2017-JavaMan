@@ -9,12 +9,17 @@ import java.time.LocalDateTime;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.MalformedURLException;
+import java.util.logging.*;
 
 public class Update
 {
   static boolean autoUpdate;
   static ManPage[] docs;
   static int minAutoUpdateTime = 0; //minimum time to trigger automatic update
+  static Logger logger = Logger.getLogger("JavaMan.Update");
+  static Handler fileHandler = new FileHandler("update.log");
+  static LoggingFormater formatter = new LoggingFormatter();
+  
 
 /*
 CheckAutoUpdateCondition() is called from main before every query to set a flag
@@ -125,9 +130,15 @@ elapsed sets the update flag accordingly
 
   }
 
-  private static void logUpdate()
+  /**
+   * Logs if the update is succeful or unsuccessful
+   * @param result the string of successful or unsuccessful
+   */
+  private static void logUpdate(String result)
   {
-
+    fileHandler.setFormatter(formater);
+    logger.addHandler(fileHandler);
+    logger.info("Update " + result);
   }
 
   private static void displayErrorNoInternet()
