@@ -17,6 +17,8 @@ public class Update
   static ManPage[] docs;
   static int minAutoUpdateTime = 0; //minimum time to trigger automatic update
   static Logger logger = Logger.getLogger("JavaMan.Update");
+  static Handler fileHandler;
+  static LoggingFormatter formatter;
   
 
 /*
@@ -134,8 +136,8 @@ elapsed sets the update flag accordingly
   private static void logUpdate(String result)
   {
     try{
-      Handler fileHandler = new FileHandler("update.log");
-      LoggingFormatter formatter = new LoggingFormatter();
+      fileHandler = new FileHandler("update.log");
+      formatter = new LoggingFormatter();
       fileHandler.setFormatter(formater);
       logger.addHandler(fileHandler);
       logger.info("Update " + result);
