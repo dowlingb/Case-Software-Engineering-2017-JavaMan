@@ -8,10 +8,17 @@ public class ManPage
 {
   String pageText;
   String fileName;
+ 
+  public ManPage(String file, String page) 
+  {
+    pageText = page;
+    fileName = file;
+  }
 
   public void displayText()
   {
-
+     System.out.println(pageText);
+     System.out.println(pageText);
   }
 
   public void readFile()
