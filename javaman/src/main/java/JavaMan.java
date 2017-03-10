@@ -77,6 +77,6 @@ public class JavaMan
   
   public static void update()
   {
-    System.out.println("Not yet implemented");
+    Update.update(true);
   }
 }
