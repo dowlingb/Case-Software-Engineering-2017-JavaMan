@@ -5,7 +5,8 @@
   import java.io.*;
 public class JavaMan
 {
-  public static String home = "c:" + File.separatorChar;
+  public static String home = File.listRoots()[0].toString();//hypothetically should work indepentant of operating system as long as the files are in the home folder
+  //"c:" + File.separatorChar; <for windows
   
   public static void main(String[] args) {
    if(args==null||args.length == 0 || args[0] == null)
