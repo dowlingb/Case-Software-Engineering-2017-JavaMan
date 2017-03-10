@@ -77,6 +77,13 @@ public class JavaMan
   
   public static void update()
   {
+    if(Update.checkInternetConnection())
+    {
     Update.update(true);
+    }
+    else
+    {
+      System.out.println("Please restore internet connection and attempt update again");
+    }
   }
 }
