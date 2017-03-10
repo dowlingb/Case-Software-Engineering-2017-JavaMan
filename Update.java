@@ -17,8 +17,12 @@ public class Update
   static ManPage[] docs;
   static int minAutoUpdateTime = 0; //minimum time to trigger automatic update
   static Logger logger = Logger.getLogger("JavaMan.Update");
-  static Handler fileHandler = new FileHandler("update.log");
-  static LoggingFormater formatter = new LoggingFormatter();
+  try{
+    static Handler fileHandler = new FileHandler("update.log");
+    static LoggingFormatter formatter = new LoggingFormatter();
+  } catch(Excption e){
+    e.printStackTrace();
+  }
   
 
 /*
@@ -78,7 +82,6 @@ elapsed sets the update flag accordingly
   private static void downloadDocs()
   {
     Debug.printv("Downloading documentation...");
-
     //run the docScraper script to pull webpage data
     Runtime rt = Runtime.getRuntime();
     try{
@@ -94,7 +97,7 @@ elapsed sets the update flag accordingly
         ex.printStackTrace();
     }
   }
-
+ 
   private void downloadDoc(String url)
   {
 
