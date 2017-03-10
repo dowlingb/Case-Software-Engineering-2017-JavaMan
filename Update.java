@@ -17,12 +17,6 @@ public class Update
   static ManPage[] docs;
   static int minAutoUpdateTime = 0; //minimum time to trigger automatic update
   static Logger logger = Logger.getLogger("JavaMan.Update");
-  try{
-    static Handler fileHandler = new FileHandler("update.log");
-    static LoggingFormatter formatter = new LoggingFormatter();
-  } catch(Excption e){
-    e.printStackTrace();
-  }
   
 
 /*
@@ -139,9 +133,15 @@ elapsed sets the update flag accordingly
    */
   private static void logUpdate(String result)
   {
-    fileHandler.setFormatter(formater);
-    logger.addHandler(fileHandler);
-    logger.info("Update " + result);
+    try{
+      Handler fileHandler = new FileHandler("update.log");
+      LoggingFormatter formatter = new LoggingFormatter();
+      fileHandler.setFormatter(formater);
+      logger.addHandler(fileHandler);
+      logger.info("Update " + result);
+    } catch(Excption e){
+      e.printStackTrace();
+    }
   }
 
   private static void displayErrorNoInternet()
