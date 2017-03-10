@@ -10,8 +10,8 @@ public class Debug
 
   public static void main(String []args)
   {
-    ManPage testpage = new ManPage("testmanpagefile","123");
-    testpage.readFile();
+    ManPage testpage = new ManPage("testmanpagefile","123\n456");
+    testpage.writeFile();
     testpage.displayText();
   }
 }

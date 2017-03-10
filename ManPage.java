@@ -5,6 +5,7 @@
  * */
 import java.io.*;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.lang.StringBuilder;
 
 public class ManPage
@@ -32,7 +33,6 @@ public class ManPage
       BufferedReader reader = new BufferedReader(new FileReader(fileName));
       while((filelinestring = reader.readLine()) != null)
       {
-        Debug.printv("read line");
         //this appends an extra line at the end of the file, but it looks
         //nice for formatting anyway
         filetextstringbuilder.append(filelinestring + "\n");
@@ -42,13 +42,20 @@ public class ManPage
     {
       System.out.println("Error reading from file");
       pageText = "";
+      return;
     }
     pageText = filetextstringbuilder.toString();
   }
 
   public void writeFile()
   {
-
-
+    try
+    {
+      BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
+      writer.write(pageText, 0, pageText.length());
+    }catch(IOException exception)
+    {
+      System.out.println("Error writing to file");
+    }
   }
 }
