@@ -9,12 +9,17 @@ import java.time.LocalDateTime;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.MalformedURLException;
+import java.util.logging.*;
 
 public class Update
 {
   static boolean autoUpdate;
   static ManPage[] docs;
   static int minAutoUpdateTime = 0; //minimum time to trigger automatic update
+  static Logger logger = Logger.getLogger("JavaMan.Update");
+  static Handler fileHandler;
+  static LoggingFormatter formatter;
+  
 
 /*
 CheckAutoUpdateCondition() is called from main before every query to set a flag
@@ -73,7 +78,6 @@ elapsed sets the update flag accordingly
   private static void downloadDocs()
   {
     Debug.printv("Downloading documentation...");
-
     //run the docScraper script to pull webpage data
     Runtime rt = Runtime.getRuntime();
     try{
@@ -89,7 +93,7 @@ elapsed sets the update flag accordingly
         ex.printStackTrace();
     }
   }
-
+ 
   private void downloadDoc(String url)
   {
 
@@ -125,9 +129,21 @@ elapsed sets the update flag accordingly
 
   }
 
-  private static void logUpdate()
+  /**
+   * Logs if the update is succeful or unsuccessful
+   * @param result the string of successful or unsuccessful
+   */
+  private static void logUpdate(String result)
   {
-
+    try{
+      fileHandler = new FileHandler("update.log");
+      formatter = new LoggingFormatter();
+      fileHandler.setFormatter(formater);
+      logger.addHandler(fileHandler);
+      logger.info("Update " + result);
+    } catch(Excption e){
+      e.printStackTrace();
+    }
   }
 
   private static void displayErrorNoInternet()
