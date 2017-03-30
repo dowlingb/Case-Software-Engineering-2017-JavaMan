@@ -59,7 +59,7 @@ elapsed sets the update flag accordingly
         conn.connect();
       }catch(IOException cantconnect)
       {
-        Debug.printv("Error: can't connect");
+        displayErrorNoInternet();
         return false;
       }
     }catch(MalformedURLException malformedurl)
@@ -132,7 +132,8 @@ elapsed sets the update flag accordingly
 
   private static void displayErrorNoInternet()
   {
-
+    System.out.println("Error: Cannot connect to the online documentation for"
+      + " update");
   }
 
   public static void main(String []args)
