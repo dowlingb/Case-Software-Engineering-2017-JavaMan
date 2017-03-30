@@ -7,7 +7,7 @@ public class JavaMan
 {
   public static String home = File.listRoots()[0].toString();//hypothetically should work indepentant of operating system as long as the files are in the home folder
   //"c:" + File.separatorChar; <for windows
-  
+
   public static void main(String[] args) {
    if(args==null||args.length == 0 || args[0] == null)
    {
@@ -21,7 +21,7 @@ public class JavaMan
      update();
      return;
     }
-    else if(args[0].equals("help"))  
+    else if(args[0].equals("help"))
     {
       help();
       return;
@@ -37,12 +37,12 @@ public class JavaMan
     }
    }
   }
-  
+
   public static void help()
   {
    System.out.println("Enter command to update using \"update\" or access a class using \"access <class path>\" where class path is formatted as java.lang.String");
   }
-  
+
   public static void notRecognized()
   {
    System.out.println("Command not recognized.");
@@ -55,10 +55,10 @@ public class JavaMan
     try
     {
       BufferedReader br = new BufferedReader(new FileReader(inFile));
-      
+
       StringBuilder sb = new StringBuilder();
       String line = br.readLine();
-      
+
       while (line != null)
       {
         sb.append(line);
@@ -68,22 +68,15 @@ public class JavaMan
       String everything = sb.toString();
       System.out.println(everything);
       br.close();
-    } 
+    }
     catch (Exception E)
     {
       notRecognized(); // I realize this is a very general fix but if it doesnt conform to the exact format then it wont work and therefore this will show up.
     }
   }
-  
+
   public static void update()
   {
-    if(Update.checkInternetConnection())
-    {
     Update.update(true);
-    }
-    else
-    {
-      System.out.println("Please restore internet connection and attempt update again");
-    }
   }
 }

@@ -19,7 +19,7 @@ public class Update
   static Logger logger = Logger.getLogger("JavaMan.Update");
   static Handler fileHandler;
   static LoggingFormatter formatter;
-  
+
 
 /*
 CheckAutoUpdateCondition() is called from main before every query to set a flag
@@ -46,7 +46,8 @@ elapsed sets the update flag accordingly
 
   public static void update(boolean isManual)
   {
-    downloadDocs();
+    if(checkInternetConnection())
+      downloadDocs();
   }
 
   /*
@@ -93,7 +94,7 @@ elapsed sets the update flag accordingly
         ex.printStackTrace();
     }
   }
- 
+
   private void downloadDoc(String url)
   {
 
@@ -138,10 +139,10 @@ elapsed sets the update flag accordingly
     try{
       fileHandler = new FileHandler("update.log");
       formatter = new LoggingFormatter();
-      fileHandler.setFormatter(formater);
+      fileHandler.setFormatter(formatter);
       logger.addHandler(fileHandler);
       logger.info("Update " + result);
-    } catch(Excption e){
+    } catch(Exception e){
       e.printStackTrace();
     }
   }
