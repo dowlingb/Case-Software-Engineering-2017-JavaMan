@@ -1,5 +1,3 @@
-package src;
-
 /*
  * @author Brendan Dowling
  * This is the main class for accessing and running the javaman program
