@@ -24,6 +24,14 @@ public class ManPage
      System.out.println(pageText);
   }
 
+  /*
+   * NOTE: change this to a stringbuilder later for efficiency
+   */
+  public void append(String additionalPageText)
+  {
+	  pageText += additionalPageText;
+  }
+  
   public void readFile()
   {
     String filelinestring = null;
@@ -52,7 +60,7 @@ public class ManPage
     try
     {
       BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
-      writer.write(pageText, 0, pageText.length());
+      writer.write(pageText);
     }catch(IOException exception)
     {
       System.out.println("Error writing to file");

@@ -14,6 +14,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import java.lang.StringBuilder;
 
 public class Update
 {
@@ -103,11 +104,18 @@ elapsed sets the update flag accordingly
     try
     {
     	JSONParser parser = new JSONParser();
+    	String manpagetext;
+    	ManPage manpage;
     	JSONArray a = (JSONArray) parser.parse(new FileReader("Test.json"));
     	for(Object o : a)
     	{
+    		//set up the manpage object and json object
     		JSONObject jClass = (JSONObject) o;
     		String classname = (String)jClass.get("name");
+    		manpage = new ManPage(classname,"");
+    		
+    		manpage.append(classname.toUpperCase());
+    		
     		//System.out.println("Class: ");
     		//System.out.println("\t" + classname);
     		
@@ -132,6 +140,7 @@ elapsed sets the update flag accordingly
     			//System.out.println("\t" + methodName + " : " + methodDesc);
     			//System.out.println("\t\t Returns: " + modAndType);
     		}
+    		manpage.writeFile();
     	}
     } catch (FileNotFoundException e)
     {
@@ -143,6 +152,8 @@ elapsed sets the update flag accordingly
     {
         Debug.printv("Error: Cannot parse JSON file");
     }
+    
+    //put that formatted text data into a ManPage object and call its write method
   }
 
   private void downloadDoc(String url)
