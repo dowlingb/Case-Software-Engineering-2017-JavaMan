@@ -103,6 +103,7 @@ elapsed sets the update flag accordingly
     //read from that JSON file and convert to plaintext
     try
     {
+    	//standard terminal window is 80 chars across
     	JSONParser parser = new JSONParser();
     	String manpagetext;
     	ManPage manpage;
@@ -114,7 +115,7 @@ elapsed sets the update flag accordingly
     		String classname = (String)jClass.get("name");
     		manpage = new ManPage(classname,"");
     		
-    		manpage.append(classname.toUpperCase());
+    		manpage.append(classname.toUpperCase()+"(JAVA)", Justification.CENTER);
     		
     		//System.out.println("Class: ");
     		//System.out.println("\t" + classname);
@@ -154,6 +155,8 @@ elapsed sets the update flag accordingly
     }
     
     //put that formatted text data into a ManPage object and call its write method
+    
+    Debug.printv("Finished updating documentation.");
   }
 
   private void downloadDoc(String url)

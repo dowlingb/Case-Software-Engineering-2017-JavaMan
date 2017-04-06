@@ -1,3 +1,7 @@
+/**
+ * @author Brennan McFarland
+ * a collection of useful methods for debugging
+ * */
 public class Debug
 {
   static boolean printVerbose = true;

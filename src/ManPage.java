@@ -12,6 +12,7 @@ public class ManPage
 {
   String pageText; //holds the formatted plaintext man page file contents
   String fileName;
+  static final int WINDOWWIDTH = 80;
 
   public ManPage(String file, String page)
   {
@@ -27,8 +28,24 @@ public class ManPage
   /*
    * NOTE: change this to a stringbuilder later for efficiency
    */
-  public void append(String additionalPageText)
+  public void append(String additionalPageText, Justification justification)
   {
+	  if(justification == Justification.CENTER)
+	  {
+		  for(int i=pageText.length()-pageText.lastIndexOf('\n');
+				  i<(WINDOWWIDTH-additionalPageText.length())/2; i++)
+		  {
+			  pageText += " ";
+		  }
+	  }
+	  else if(justification == Justification.RIGHT)
+	  {
+		  for(int i=pageText.length()-pageText.lastIndexOf('\n');
+				  i<=WINDOWWIDTH-additionalPageText.length(); i++)
+		  {
+			  pageText += " ";
+		  }
+	  }
 	  pageText += additionalPageText;
   }
   
