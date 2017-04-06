@@ -3,5 +3,5 @@
  * for formatting: left, center, or right justified
  * */
 public enum Justification {
-	LEFT, CENTER, RIGHT
+	LEFT, CENTER, RIGHT, FIRSTINDENT, SECONDINDENT
 }

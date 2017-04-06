@@ -113,33 +113,47 @@ elapsed sets the update flag accordingly
     		//set up the manpage object and json object
     		JSONObject jClass = (JSONObject) o;
     		String classname = (String)jClass.get("name");
+    		classname = processDocString(classname);
     		manpage = new ManPage(classname,"");
     		
-    		manpage.append(classname.toUpperCase()+"(JAVA)", Justification.CENTER);
-    		
-    		//System.out.println("Class: ");
-    		//System.out.println("\t" + classname);
+    		//class information
+    		manpage.append(classname.toUpperCase()+"(JAVA)", Justification.LEFT);
+    		manpage.append(classname+"Class", Justification.CENTER);
+    		manpage.append(classname.toUpperCase()+"(JAVA)", Justification.RIGHT);
+    		manpage.append("\n\n", Justification.LEFT);
     		
     		JSONArray jConstructors = (JSONArray) jClass.get("constructors");
-    		//System.out.println("Constructors: ");
+    		
+    		//constructor information
+    		manpage.append("CONSTRUCTORS\n", Justification.LEFT);
     		for(Object b : jConstructors)
     		{
     			JSONObject jConstObj = (JSONObject) b;
     			String constructorName = (String)jConstObj.get("name");
+    			constructorName = processDocString(constructorName);
     			String constructorDesc = (String)jConstObj.get("description");
-    			//System.out.println("\t" + constructorName + " : " + constructorDesc);
+    			constructorDesc = processDocString(constructorDesc);
+    			
+    			manpage.append(constructorName+"\n", Justification.FIRSTINDENT);
+    			manpage.append(constructorDesc+"\n", Justification.SECONDINDENT);
     		}
     		
     		JSONArray jMethods = (JSONArray) jClass.get("methods");
-    		//System.out.println("Methods: ");
+    		
+    		//method information
+    		manpage.append("\nMETHODS\n", Justification.LEFT);
     		for(Object b : jMethods)
     		{
     			JSONObject jMethodObj = (JSONObject) b;
     			String methodName = (String) jMethodObj.get("name");
+    			methodName = processDocString(methodName);
     			String methodDesc = (String) jMethodObj.get("description");
+    			methodDesc = processDocString(methodDesc);
     			String modAndType = (String) jMethodObj.get("modAndType");
-    			//System.out.println("\t" + methodName + " : " + methodDesc);
-    			//System.out.println("\t\t Returns: " + modAndType);
+    			modAndType = processDocString(modAndType);
+    			
+    			manpage.append(modAndType+" "+methodName+"\n", Justification.FIRSTINDENT);
+    			manpage.append(methodDesc+"\n", Justification.SECONDINDENT);
     		}
     		manpage.writeFile();
     	}
@@ -159,6 +173,16 @@ elapsed sets the update flag accordingly
     Debug.printv("Finished updating documentation.");
   }
 
+  //scrubs a scraped doc string of newlines and other unwanted formatting
+  private static String processDocString(String rawDocText)
+  {
+	  String processedDocText = rawDocText;
+	  processedDocText = processedDocText.replace("\n", " ");
+	  processedDocText = processedDocText.replace("\t", " ");
+	  processedDocText = processedDocText.replaceAll("( )+", " ");
+	  return processedDocText;
+  }
+  
   private void downloadDoc(String url)
   {
 
