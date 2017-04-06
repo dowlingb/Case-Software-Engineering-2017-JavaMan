@@ -10,6 +10,10 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.MalformedURLException;
 import java.util.logging.*;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 public class Update
 {
@@ -82,16 +86,62 @@ elapsed sets the update flag accordingly
     //run the docScraper script to pull webpage data
     Runtime rt = Runtime.getRuntime();
     try{
-        Process proc = rt.exec("casperjs docScraper.js");
-        BufferedReader input = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-        String line=null;
-        while((line=input.readLine()) != null) {
-          System.out.println(line);
-        }
-        int exitVal = proc.waitFor();
-        System.out.println("Exited with error code "+exitVal);
+        //Process proc = rt.exec("casperjs docScraper.js");
+        //BufferedReader input = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+        //String line=null;
+        //while((line=input.readLine()) != null) {
+        //  System.out.println(line);
+        //}
+        //int exitVal = proc.waitFor();
+        //System.out.println("Exited with error code "+exitVal);
     }catch(Exception ex){
         ex.printStackTrace();
+    }
+    
+    Debug.printv("Formatting documentation...");
+    //read from that JSON file and convert to plaintext
+    try
+    {
+    	JSONParser parser = new JSONParser();
+    	JSONArray a = (JSONArray) parser.parse(new FileReader("Test.json"));
+    	for(Object o : a)
+    	{
+    		JSONObject jClass = (JSONObject) o;
+    		String classname = (String)jClass.get("name");
+    		//System.out.println("Class: ");
+    		//System.out.println("\t" + classname);
+    		
+    		JSONArray jConstructors = (JSONArray) jClass.get("constructors");
+    		//System.out.println("Constructors: ");
+    		for(Object b : jConstructors)
+    		{
+    			JSONObject jConstObj = (JSONObject) b;
+    			String constructorName = (String)jConstObj.get("name");
+    			String constructorDesc = (String)jConstObj.get("description");
+    			//System.out.println("\t" + constructorName + " : " + constructorDesc);
+    		}
+    		
+    		JSONArray jMethods = (JSONArray) jClass.get("methods");
+    		//System.out.println("Methods: ");
+    		for(Object b : jMethods)
+    		{
+    			JSONObject jMethodObj = (JSONObject) b;
+    			String methodName = (String) jMethodObj.get("name");
+    			String methodDesc = (String) jMethodObj.get("description");
+    			String modAndType = (String) jMethodObj.get("modAndType");
+    			//System.out.println("\t" + methodName + " : " + methodDesc);
+    			//System.out.println("\t\t Returns: " + modAndType);
+    		}
+    	}
+    } catch (FileNotFoundException e)
+    {
+        Debug.printv("Error: JSON file not found");
+    } catch (IOException e)
+    {
+        Debug.printv("Error: IOException reading from JSON file");
+    } catch (ParseException e)
+    {
+        Debug.printv("Error: Cannot parse JSON file");
     }
   }
 
@@ -155,11 +205,12 @@ elapsed sets the update flag accordingly
 
   public static void main(String []args)
   {
-    checkAutoUpdateCondition();
+	downloadDocs();
+    /*checkAutoUpdateCondition();
     if(autoUpdate == true) //TODO: or manual user input
     {
       if(checkInternetConnection() == true)
         update(autoUpdate);
-    }
+    }*/
   }
 }
