@@ -61,6 +61,7 @@ public class ManPage
     {
       BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
       writer.write(pageText);
+      writer.close();
     }catch(IOException exception)
     {
       System.out.println("Error writing to file");
