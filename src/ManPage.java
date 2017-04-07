@@ -107,15 +107,11 @@ public class ManPage
 	  //it's not working on the first indent, indentValue is coming back 0
 	  int indentValue;
 	  if(indent == Justification.FIRSTINDENT)
-	  {
 		  indentValue = FIRSTINDENT;
-		  System.out.println(indentValue);
-	  }
 	  else if(indent == Justification.SECONDINDENT)
 		  indentValue = FIRSTINDENT+SECONDINDENT;
 	  else
 		  indentValue = 0;
-	  System.out.println(indentValue);
 	  
 	  String wrappedText = "";
 	  while(unwrappedText.length() > WINDOWWIDTH)
@@ -123,15 +119,13 @@ public class ManPage
 		  int lastIndex = unwrappedText.lastIndexOf(" ", WINDOWWIDTH-indentValue);
 		  wrappedText = wrappedText.concat(
 				  unwrappedText.substring(0, lastIndex));
-		  System.out.println(lastIndex + " " + indentValue);
-		  wrappedText.concat("\n");
+		  wrappedText = wrappedText.concat("\n");
 		  for(int i=0; i<indentValue; i++)
-			  wrappedText.concat("|");
+			  wrappedText = wrappedText.concat(" ");
 		  unwrappedText = unwrappedText.substring(lastIndex+1,
 				  unwrappedText.length());
 	  }
 	  wrappedText += unwrappedText;
-	  //Debug.printv(wrappedText);
 	  return wrappedText;
   }
 }
