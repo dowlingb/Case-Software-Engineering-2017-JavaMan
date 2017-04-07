@@ -122,6 +122,13 @@ elapsed sets the update flag accordingly
     		manpage.append(classname.toUpperCase()+"(JAVA)", Justification.RIGHT);
     		manpage.append("\n\n", Justification.LEFT);
     		
+    		String pathname = (String)jClass.get("href");
+    		
+    		//path information
+    		manpage.append("PATH\n", Justification.LEFT);
+    		manpage.append(formatPath(pathname), Justification.FIRSTINDENT);
+    		manpage.append("\n\n", Justification.LEFT);
+    		
     		JSONArray jConstructors = (JSONArray) jClass.get("constructors");
     		
     		//constructor information
@@ -181,6 +188,14 @@ elapsed sets the update flag accordingly
 	  processedDocText = processedDocText.replace("\t", " ");
 	  processedDocText = processedDocText.replaceAll("( )+", " ");
 	  return processedDocText;
+  }
+  
+  //converts system path from href to library path format
+  private static String formatPath(String href)
+  {
+	  String formattedPath = href.replace('/', '.');
+	  formattedPath = formattedPath.substring(0, formattedPath.length()-5); //.html
+	  return formattedPath;
   }
   
   private void downloadDoc(String url)
