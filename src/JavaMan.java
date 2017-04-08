@@ -127,7 +127,7 @@ public class JavaMan
 
   public static void update()
   {
-    //Update.update(true);
+    Update.update(true);
   }
   
   public static void init()

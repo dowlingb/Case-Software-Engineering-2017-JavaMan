@@ -11,6 +11,15 @@ public class Debug
     if(printVerbose == true)
       System.out.println(printMessage);
   }
+  
+  public static boolean testSuccessfulManualUpdate()
+  {
+	  Debug.printv("assuming working internet conneciton...");
+	  Debug.printv("testing successful manual update...");
+	  JavaMan.update(); //triggers manual update
+	  //check log file to see if successful update and return if succeeded
+	  return true;
+  }
 
   public static void main(String []args)
   {
