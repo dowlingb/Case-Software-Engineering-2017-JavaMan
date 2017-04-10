@@ -16,6 +16,10 @@ public class JavaMan
   public static String home = File.listRoots()[0].toString();//hypothetically should work indepentant of operating system as long as the files are in the home folder
   //"c:" + File.separatorChar; <for windows
   public static JSONArray classArray;
+  public static String correctOutputFormatMessage = "The correct format for printing "
+		  + "commands is blah blah blah";
+  public static String noInternetConnectionMessage = "There is no network connection.  "
+		  + "Please connect to the internet so updates can complete.";
 
   public static void main(String[] args) {
 	 init();
