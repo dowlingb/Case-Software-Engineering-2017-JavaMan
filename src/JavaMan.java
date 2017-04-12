@@ -70,7 +70,6 @@ public class JavaMan
   {
     String filePath = path.replaceAll("\\.","/");
     filePath=filePath+".html";
-    System.out.println(filePath);
 	 for(Object o : classArray)
 	 {
 	  JSONObject jClass = (JSONObject) o;
@@ -85,7 +84,7 @@ public class JavaMan
   			  JSONObject jConstObj = (JSONObject) b;
   			  String constructorName = (String)jConstObj.get("name");
   			  String constructorDesc = (String)jConstObj.get("description");
-  			  System.out.println("\t" + constructorName + " : " + constructorDesc);
+  			  System.out.println("\t" + (constructorName + " : " + constructorDesc).replaceAll("\n|\t| (?= )", ""));
   		  }
   		  
   		  JSONArray jMethods = (JSONArray) jClass.get("methods");
@@ -96,8 +95,8 @@ public class JavaMan
   			  String methodName = (String) jMethodObj.get("name");
   			  String methodDesc = (String) jMethodObj.get("description");
   			  String modAndType = (String) jMethodObj.get("modAndType");
-  			  System.out.println("\t" + methodName + " : " + methodDesc);
-  			  System.out.println("\t\t Returns: " + modAndType);
+  			  System.out.println("\t" + (methodName + " : " + methodDesc).replaceAll("\t|\n| (?= )", ""));
+  			  System.out.println("\t\t Returns: " + (modAndType).replaceAll("\n|\t| (?= )", ""));
   		  }
 		 }
 	  }
@@ -120,7 +119,7 @@ public class JavaMan
     			  JSONObject jConstObj = (JSONObject) b;
     			  String constructorName = (String)jConstObj.get("name");
     			  String constructorDesc = (String)jConstObj.get("description");
-    			  System.out.println("\t" + constructorName + " : " + constructorDesc);
+    			  System.out.println("\t" + (constructorName + " : " + constructorDesc).replaceAll("\n|\t| (?= )", ""));
     		  }
     		  
     		  JSONArray jMethods = (JSONArray) jClass.get("methods");
@@ -131,8 +130,8 @@ public class JavaMan
     			  String methodName = (String) jMethodObj.get("name");
     			  String methodDesc = (String) jMethodObj.get("description");
     			  String modAndType = (String) jMethodObj.get("modAndType");
-    			  System.out.println("\t" + methodName + " : " + methodDesc);
-    			  System.out.println("\t\t Returns: " + modAndType);
+    			  System.out.println("\t" + (methodName + " : " + methodDesc).replaceAll("\t|\n| (?= )", ""));
+      			  System.out.println("\t\t Returns: " + (modAndType).replaceAll("\n|\t| (?= )", ""));
     		  }
 		  }
 	  }
