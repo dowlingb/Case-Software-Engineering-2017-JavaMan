@@ -57,14 +57,19 @@ public class JavaMan
    }
   }
 
-  public static void help()
+  public static String help()
   {
-   System.out.println("Enter command to update using \"update\" or access a class using \"access <class path>\" where class path is formatted as java.lang.String");
+   String message = "Enter command to update using \"update\" or access a class using \"access <class path>\" where class path is formatted as java.lang.String";
+   System.out.println(message);
+   return message;
+	  
   }
 
   public static void notRecognized()
   {
-   System.out.println("Command not recognized.");
+   String message = "Command not recognized.";
+   System.out.println(message);
+   return message;
   }
   public static void access(String path)
   {
