@@ -1,9 +1,12 @@
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
-
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Highlighter;
 
 import static javax.swing.GroupLayout.Alignment.*;
 
@@ -11,76 +14,85 @@ public class userInterface extends JFrame {
 	
 	private final static String newline = "\n";
 	
+	private JavaMan jm;
     private JMenuBar menuBar;
     private JMenu optionMenu;
     private JMenuItem help;
     private JMenuItem update;
     
-    private JLabel accLabel = new JLabel("Access Class:");;
-    private JTextField accText = new JTextField(20);
-    private JButton goButton1 = new JButton("go");
-
+    private JLabel accLabel;
+    private JTextField accText;
+    private JButton goButton1;
     
-
-
-    private JTextArea textArea = new JTextArea(5, 20);
+    private JLabel acLabel;
+    private JTextField acText;
+    private JButton goButton2;
+    
+    
+    private JTextArea textArea;
+    private JScrollPane scroller;
+    
+    //final Color entryBg;
+    final Highlighter hilit;
+    final Highlighter.HighlightPainter painter;
+    final static Color  HILIT_COLOR = Color.LIGHT_GRAY;
     
     public userInterface() {
 
+    	jm = new JavaMan();
+    	jm.init();
+    	
     	buildMenuBar();
     	
-        textArea.setEditable(false);
-        //JScrollPane scrollPane = new JScrollPane(textArea);
-
+    	accLabel = new JLabel("Access Class:");;
+        accText = new JTextField(20);
+        goButton1 = new JButton("Go");
         goButton1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
           	  accessClass();
             }
          });
         
+        acLabel = new JLabel("Access:");
+        acText = new JTextField(20);
+        goButton2 = new JButton("Go");
+        goButton2.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+          	  access();
+            }
+         });
+        
+        textArea = new JTextArea(50, 150);
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+        textArea.setEditable(false);
+        
+        hilit = new DefaultHighlighter();
+        painter = new DefaultHighlighter.DefaultHighlightPainter(HILIT_COLOR);
+        textArea.setHighlighter(hilit);
+        
+        scroller = new JScrollPane(textArea);
+
+        
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
         
-//        layout.setHorizontalGroup(layout.createSequentialGroup()
-//                .addComponent(accLabel)
-//                .addGroup(layout.createParallelGroup(LEADING)
-//                    .addComponent(accText))
-//                .addGroup(layout.createParallelGroup(LEADING)
-//                    .addComponent(goButton1))
-//           );
-        
-//        layout.setHorizontalGroup(layout.createSequentialGroup()
-//                
-//                .addGroup(layout.createParallelGroup(LEADING)
-//                	.addComponent(accLabel))
-//                .addGroup(layout.createParallelGroup(LEADING)
-//                    .addComponent(accText))
-//                .addGroup(layout.createParallelGroup(LEADING)
-//                	.addComponent(goButton1))
-//                .addComponent(textArea)
-//                    
-//           );
-        
         layout.setHorizontalGroup(layout.createSequentialGroup()
         		.addGroup(layout.createParallelGroup(LEADING)
-        		.addComponent(textArea)
+        				.addGroup(layout.createParallelGroup(LEADING)
+        						.addComponent(scroller))
         		.addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(LEADING)
-                        		.addComponent(accLabel))
+                        		.addComponent(accLabel)
+                        		.addComponent(acLabel))
                         .addGroup(layout.createParallelGroup(LEADING)
-                        		.addComponent(accText))
+                        		.addComponent(accText)
+                        		.addComponent(acText))
                         .addGroup(layout.createParallelGroup(LEADING)
-                        		.addComponent(goButton1))))
-//                .addGroup(layout.createParallelGroup(LEADING)
-//                	.addComponent(accLabel))
-//                .addGroup(layout.createParallelGroup(LEADING)
-//                    .addComponent(accText))
-//                .addGroup(layout.createParallelGroup(LEADING)
-//                	.addComponent(goButton1))
-                
-                    
+                        		.addComponent(goButton1)
+        						.addComponent(goButton2))))
            );
         
         layout.setVerticalGroup(layout.createSequentialGroup()
@@ -89,23 +101,25 @@ public class userInterface extends JFrame {
                     .addComponent(accText)
                     .addComponent(goButton1))
                 .addGroup(layout.createParallelGroup(LEADING)
-                	.addComponent(textArea))
-
+                    	.addComponent(acLabel)
+                        .addComponent(acText)
+                        .addComponent(goButton2))
+                .addGroup(layout.createParallelGroup(LEADING)
+                	.addComponent(scroller))
             );
-
         
-        setTitle("UI");
+        setTitle("JAVAMAN USER INTERFACE");
         pack();
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
    
-//    public void help(){
-//    	textArea.append("Enter command to update using \"update\" or access a class using \"access <class path>\" where class path is formatted as java.lang.String");
-//    }
     
     private void accessClass(){
-    	System.out.println(accText.getText());
-    	new JavaMan().accessClass(accText.getText(),this);
+    	jm.accessClass(accText.getText(),this);
+    }
+    
+    private void access(){
+    	jm.access(acText.getText(),this);
     }
     
     public void print(String text){
@@ -155,9 +169,13 @@ public class userInterface extends JFrame {
 	
 	private class updateListener implements ActionListener{
 		public void actionPerformed(ActionEvent e){
-			
+			update();
 		}
 	}
+	
+    private void update(){
+    	jm.update(this);
+    }
 	
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {

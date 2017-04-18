@@ -22,41 +22,41 @@ public class JavaMan
 		  + "Please connect to the internet so updates can complete.";
   private static userInterface ui = new userInterface();
 
-  public static void main(String[] args) {
-   init();
-//   if(args==null||args.length == 0 || args[0] == null)
-//   {
-//     notRecognized();
-//     return;
-//   }
-//   else
-//   {
-//    if(args[0].equals("update"))
-//    {
-//     update();
-//     return;
-//    }
-//    else if(args[0].equals("help"))
-//    {
-//      help();
-//      return;
-//    }
-//    else if(args[0].equals("access")&&args.length>=2)
-//    {
-//      access(args[1]);
-//      return;
-//    }
-//    else if(args[0].equals("accessclass") && args.length>=2)
-//    {
-//    	accessClass(args[1]);
-//    	return;
-//    }
-//    else
-//    {
-//      notRecognized();
-//    }
-//   }
-  }
+//  public static void main(String[] args) {
+//   init();
+////   if(args==null||args.length == 0 || args[0] == null)
+////   {
+////     notRecognized();
+////     return;
+////   }
+////   else
+////   {
+////    if(args[0].equals("update"))
+////    {
+////     update();
+////     return;
+////    }
+////    else if(args[0].equals("help"))
+////    {
+////      help();
+////      return;
+////    }
+////    else if(args[0].equals("access")&&args.length>=2)
+////    {
+////      access(args[1]);
+////      return;
+////    }
+////    else if(args[0].equals("accessclass") && args.length>=2)
+////    {
+////    	accessClass(args[1]);
+////    	return;
+////    }
+////    else
+////    {
+////      notRecognized();
+////    }
+////   }
+//  }
 
   public static String help()
   {
@@ -72,7 +72,7 @@ public class JavaMan
    System.out.println(message);
    //return message;
   }
-  public static void access(String path)
+  public void access(String path, userInterface ui)
   {
     String filePath = path.replaceAll("\\.","/");
     filePath=filePath+".html";
@@ -81,71 +81,36 @@ public class JavaMan
 	  JSONObject jClass = (JSONObject) o;
 	  //System.out.println(jClass.get("name"));
 	  if(jClass.get("href").toString().equals(filePath)){
-		  System.out.println("Class: ");
-		  System.out.println("\t" + jClass.get("name"));
+		  ui.print("Class: ");
+		  ui.print("\t" + jClass.get("name"));
   		  JSONArray jConstructors = (JSONArray) jClass.get("constructors");
-  		  System.out.println("Constructors: ");
+  		  ui.print("Constructors: ");
   		  for(Object b : jConstructors)
   		  {
   			  JSONObject jConstObj = (JSONObject) b;
   			  String constructorName = (String)jConstObj.get("name");
   			  String constructorDesc = (String)jConstObj.get("description");
-  			  System.out.println("\t" + (constructorName + " : " + constructorDesc).replaceAll("\n|\t| (?= )", ""));
+  			  ui.print("\t" + (constructorName + " : " + constructorDesc).replaceAll("\n|\t| (?= )", ""));
   		  }
   		  
   		  JSONArray jMethods = (JSONArray) jClass.get("methods");
-  		  System.out.println("Methods: ");
+  		  ui.print("Methods: ");
   		  for(Object b : jMethods)
   		  {
   			  JSONObject jMethodObj = (JSONObject) b;
   			  String methodName = (String) jMethodObj.get("name");
   			  String methodDesc = (String) jMethodObj.get("description");
   			  String modAndType = (String) jMethodObj.get("modAndType");
-  			  System.out.println("\t" + (methodName + " : " + methodDesc).replaceAll("\t|\n| (?= )", ""));
-  			  System.out.println("\t\t Returns: " + (modAndType).replaceAll("\n|\t| (?= )", ""));
+  			  ui.print("\t" + (methodName + " : " + methodDesc).replaceAll("\t|\n| (?= )", ""));
+  			  ui.print("\t\t Returns: " + (modAndType).replaceAll("\n|\t| (?= )", ""));
   		  }
 		 }
 	  }
 	  
   }
-  
-//  public void accessClass(String classStr,userInterface ui){
-//	  for(Object o : classArray)
-//	  {
-//		  JSONObject jClass = (JSONObject) o;
-//		  //System.out.println(jClass.get("name"));
-//		  if(jClass.get("name").toString().equals(classStr)){
-//			  System.out.println("Class: ");
-//    		  System.out.println("\t" + jClass.get("name"));
-//
-//    		  JSONArray jConstructors = (JSONArray) jClass.get("constructors");
-//    		  System.out.println("Constructors: ");
-//    		  for(Object b : jConstructors)
-//    		  {
-//    			  JSONObject jConstObj = (JSONObject) b;
-//    			  String constructorName = (String)jConstObj.get("name");
-//    			  String constructorDesc = (String)jConstObj.get("description");
-//    			  System.out.println("\t" + (constructorName + " : " + constructorDesc).replaceAll("\n|\t| (?= )", ""));
-//    		  }
-//    		  
-//    		  JSONArray jMethods = (JSONArray) jClass.get("methods");
-//    		  System.out.println("Methods: ");
-//    		  for(Object b : jMethods)
-//    		  {
-//    			  JSONObject jMethodObj = (JSONObject) b;
-//    			  String methodName = (String) jMethodObj.get("name");
-//    			  String methodDesc = (String) jMethodObj.get("description");
-//    			  String modAndType = (String) jMethodObj.get("modAndType");
-//    			  System.out.println("\t" + (methodName + " : " + methodDesc).replaceAll("\t|\n| (?= )", ""));
-//      			  System.out.println("\t\t Returns: " + (modAndType).replaceAll("\n|\t| (?= )", ""));
-//    		  }
-//		  }
-//	  }
-//  }
 
   
   public void accessClass(String classStr,userInterface ui){
-	  init();
 	  for(Object o : classArray)
 	  {
 		  JSONObject jClass = (JSONObject) o;
@@ -179,12 +144,12 @@ public class JavaMan
 	  }
   }
   
-  public static void update()
+  public void update(userInterface ui)
   {
-    Update.update(true);
+    Update.update(true,ui);
   }
   
-  public static void init()
+  public void init()
   {
 	  try
       {
