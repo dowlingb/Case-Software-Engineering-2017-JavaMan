@@ -1,4 +1,6 @@
+package UI;
 /**
+
  * @author Brennan McFarland
  * Update handles all updates to the documentation database, both automatic
  * and manual, including error checking and handling, logging, and formatting
@@ -33,7 +35,7 @@ successful update in the log file.  It compares the system clock to the
 timestamp of the last successful update, if one exists, and if enough time has
 elapsed sets the update flag accordingly
 */
-  public static boolean checkAutoUpdateCondition()
+  public static boolean checkAutoUpdateCondition(userInterface ui)
   {
     //TODO: check system clock with last update time in log file to see if
     //update needed, rn just runs always
@@ -41,7 +43,7 @@ elapsed sets the update flag accordingly
     //-1 if the datetimes are =
     if(timeSinceLastUpdate >= minAutoUpdateTime || timeSinceLastUpdate == -1)
     {
-      Debug.printv("Triggered automatic update...");
+    	ui.print("Triggered automatic update...");
       autoUpdate = true;
       return true;
     }
@@ -49,17 +51,17 @@ elapsed sets the update flag accordingly
     return false;
   }
 
-  public static void update(boolean isManual)
+  public static void update(boolean isManual,userInterface ui)
   {
-    if(checkInternetConnection())
-      downloadDocs();
+    if(checkInternetConnection(ui))
+      downloadDocs(ui);
   }
 
   /*
   check internet connectivity to determine if updated documentation can be
   downloaded
   */
-  private static boolean checkInternetConnection()
+  private static boolean checkInternetConnection(userInterface ui)
   {
     try
     {
@@ -70,20 +72,20 @@ elapsed sets the update flag accordingly
         conn.connect();
       }catch(IOException cantconnect)
       {
-        displayErrorNoInternet();
+        displayErrorNoInternet(ui);
         return false;
       }
     }catch(MalformedURLException malformedurl)
     {
-      Debug.printv("Error: malformed URL");
+    	ui.print("Error: malformed URL");
       System.exit(1);
     }
     return true;
   }
 
-  private static void downloadDocs()
+  private static void downloadDocs(userInterface ui)
   {
-    Debug.printv("Downloading documentation...");
+	  ui.print("Downloading documentation...");
     //run the docScraper script to pull webpage data
     Runtime rt = Runtime.getRuntime();
     try{
@@ -99,7 +101,7 @@ elapsed sets the update flag accordingly
         ex.printStackTrace();
     }
     
-    Debug.printv("Formatting documentation...");
+    ui.print("Formatting documentation...");
     //read from that JSON file and convert to plaintext
     try
     {
@@ -166,18 +168,18 @@ elapsed sets the update flag accordingly
     	}
     } catch (FileNotFoundException e)
     {
-        Debug.printv("Error: JSON file not found");
+    	ui.print("Error: JSON file not found");
     } catch (IOException e)
     {
-        Debug.printv("Error: IOException reading from JSON file");
+    	ui.print("Error: IOException reading from JSON file");
     } catch (ParseException e)
     {
-        Debug.printv("Error: Cannot parse JSON file");
+    	ui.print("Error: Cannot parse JSON file");
     }
     
     //put that formatted text data into a ManPage object and call its write method
     
-    Debug.printv("Finished updating documentation.");
+    ui.print("Finished updating documentation.");
   }
 
   //scrubs a scraped doc string of newlines and other unwanted formatting
@@ -250,15 +252,15 @@ elapsed sets the update flag accordingly
     }
   }
 
-  private static void displayErrorNoInternet()
+  private static void displayErrorNoInternet(userInterface ui)
   {
-    System.out.println("Error: Cannot connect to the online documentation for"
+	  ui.print("Error: Cannot connect to the online documentation for"
       + " update");
   }
 
   public static void main(String []args)
   {
-	downloadDocs();
+	downloadDocs(new userInterface());
     /*checkAutoUpdateCondition();
     if(autoUpdate == true) //TODO: or manual user input
     {

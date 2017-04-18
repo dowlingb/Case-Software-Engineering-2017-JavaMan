@@ -1,3 +1,5 @@
+package UI;
+
 /**
  * @author Brennan McFarland
  * ManPage handles all data associated with a single man page, holds text data

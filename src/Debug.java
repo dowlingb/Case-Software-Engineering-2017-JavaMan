@@ -1,4 +1,6 @@
+package UI;
 /**
+
  * @author Brennan McFarland
  * a collection of useful methods for debugging
  * */
@@ -142,7 +144,7 @@ public class Debug
 	  if(runAsExternalProcess("uupdate") != JavaMan.correctOutputFormatMessage)
 		  return false;
 	  //if(LoggingFormatter.checkIfLastUpdateSuccessful() == true)
-		  //return false;
+		  //return false;`
 	  
 	  return true;
   }

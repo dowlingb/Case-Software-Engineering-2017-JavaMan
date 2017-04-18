@@ -1,3 +1,4 @@
+package UI;
 /**
  * @author Yan Ling Cheung
  * LoggingFormatter is used by the FileHandler class and it sets the format
