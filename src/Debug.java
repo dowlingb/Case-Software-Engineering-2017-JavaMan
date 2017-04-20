@@ -4,8 +4,13 @@
  * */
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
+
+
+import static java.lang.ProcessBuilder.Redirect;
 
 public class Debug
 {
@@ -47,15 +52,60 @@ public class Debug
   private static String runAsExternalProcess(String args)
   {
 	  Process proc = null;
+	  ProcessBuilder pb = null;
 	  try
 	  {
 		  try
 		  {
+			  /*TODO: change bashcommand for linux as well*/
 			  //attempt to execute process on windows bash
 			  String[] bashcommand = new String[] {"\"C:\\Program Files\\Git\\git-bash.exe\"",
-					  "--cd-to-home", "-c", "javaman " + args};
-			  proc = new ProcessBuilder(bashcommand).start();
-			  proc.waitFor();
+					  " --cd-to-home",
+					  " -c ", "javaman " + args + " >> javaman_testcase_output.txt"};
+			  //String[] bashcommand = new String[] {"\"C:\\Program Files\\Git\\git-bash.exe\"",
+			//		  "-c", "echo hello >> test.txt"};
+			  /*
+			   * at the very least directing the output of an echo command to a file
+			   * works, but for some reason even with an echo command it is not
+			   * capturing the output like it should
+			   * even with the above, it creates the file but doesn't write anything to it
+			   */
+			  System.out.println(bashcommand[0]+bashcommand[1]+bashcommand[2]+bashcommand[3]);
+			  ProcessBuilder builder = new ProcessBuilder(bashcommand);
+			  builder.redirectErrorStream(true);
+			  Process process = builder.start();
+			  InputStream is = process.getInputStream();
+			  BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+
+			  String line = null;
+			  while ((line = reader.readLine()) != null) {
+			     System.out.println(line);
+			  }
+			  //System.out.println("we got here");
+			  //pb = new ProcessBuilder(bashcommand);
+			  //File file = new File("file1.txt");
+			  //pb.redirectErrorStream(true);
+			  //pb.redirectOutput(Redirect.appendTo(file));
+			  //proc = pb.start();
+			  //assert pb.redirectInput() == Redirect.PIPE;
+			  //assert pb.redirectOutput().file() == file;
+			  //assert proc.getInputStream().read() == -1;
+			  //BufferedReader bri = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+			  //String outputline = null;
+			  //String output = "";
+			  //try
+			  //{
+				//  while ((outputline = bri.readLine()) != null) {
+				//	  System.out.println("stuff");
+				//	  output += outputline;
+			  	//}
+			  //}
+			  //catch(IOException exception)
+			  //{
+				//  Debug.printv("Error: IOException when capturing debug process output");
+			 // }
+			  //System.out.println("|" + output + "|");
+			  //proc.waitFor();
 		  }
 		  catch(IOException notWindows)
 		  {
@@ -65,6 +115,21 @@ public class Debug
 				  String[] bashcommand = new String[] {"/bin/bash",
 						  "-c", "javaman " + args};
 				  proc = new ProcessBuilder(bashcommand).start();
+				  BufferedReader bri = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+				  String outputline = null;
+				  String output = "";
+				  try
+				  {
+					  while ((outputline = bri.readLine()) != null) {
+						  System.out.println("stuff");
+						  output += outputline;
+				  	}
+				  }
+				  catch(IOException exception)
+				  {
+					  Debug.printv("Error: IOException when capturing debug process output");
+				  }
+				  System.out.println("|" + output + "|");
 				  proc.waitFor();
 			  }
 			  catch(IOException notLinux)
@@ -79,21 +144,8 @@ public class Debug
 		  Debug.printv("Error: debug process interrupted");
 	  }
 	  
-	  BufferedReader bri = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-	  String outputline;
-	  String output = "";
-	  try
-	  {
-		  while ((outputline = bri.readLine()) != null) {
-		  output += outputline;
-	  	}
-	  }
-	  catch(IOException exception)
-	  {
-		  Debug.printv("Error: IOException when capturing debug process output");
-	  }
-	  
-	  return output;
+	  return "";
+	  //return output;
   }
   
   //test result of a successful manual update 
@@ -157,10 +209,50 @@ public class Debug
 		  //return false;
 	  return true;
   }
+  
+  public static void temp()
+  {
+	  
+	  try{
+	  String[] bashcommand = new String[] {"\"C:\\Program Files\\Git\\git-bash.exe\"",
+			  "-c", "echo hello >> test.txt"};
+	  
+	  /*
+	  ProcessBuilder pb = new ProcessBuilder(bashcommand);
+	  pb.redirectOutput(Redirect.appendTo(new File("file1.txt")));
+	  Process p = pb.start();
+	  p.waitFor();*/
+	  /*
+	  ProcessBuilder pb = new ProcessBuilder((bashcommand));
+	  Process process;
+
+	  BufferedReader reader = 
+              new BufferedReader(new InputStreamReader(process.getInputStream()));
+	  StringBuilder builder = new StringBuilder();
+	  String line = null;
+	  process = pb.start();
+	  process.waitFor();
+	  while ( (line = reader.readLine()) != null) {
+		  builder.append(line);
+		  builder.append(System.getProperty("line.separator"));
+		  System.out.println("hey");
+	  }*/
+	  ProcessBuilder pb = new ProcessBuilder((bashcommand));
+	  Process process = Runtime.getRuntime().exec(bashcommand);
+	  
+	  
+	  //String result = builder.toString();
+	  //System.out.println("|"+result+"|");
+	  }catch(Exception e)
+	  {
+		  return;
+	  }
+  }
 
   public static void main(String []args)
   {
-	 testAll(); 
+	 testAll();
+	  //temp();
     //ManPage testpage = new ManPage("testmanpagefile","123\n456");
     //testpage.writeFile();
     //testpage.displayText();
