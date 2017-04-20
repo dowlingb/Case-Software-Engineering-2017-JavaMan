@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -175,7 +176,9 @@ public class Debug
   {
 	  Debug.printv("assuming working internet connection...");
 	  Debug.printv("testing successful manual update...");
-	  runAsExternalProcess("update"); //triggers manual update
+	  File file = new File(DEBUGFILE);
+	  file.delete();
+	  JavaMan.update();
 	  //check log file to see if successful update and return if succeeded
 	  //if(LoggingFormatter.checkIfLastUpdateSuccessful() == true)
 		  return true;
@@ -188,32 +191,10 @@ public class Debug
   {
 	  Debug.printv("assuming working internet connection...");
 	  Debug.printv("testing malformed manual update...");
-	  if(runAsExternalProcess("updte") != JavaMan.correctOutputFormatMessage)
-		  return false;
-	  //if(LoggingFormatter.checkIfLastUpdateSuccessful() == true)
-		  //return false;
-	  
-	  if(runAsExternalProcess("") != JavaMan.correctOutputFormatMessage)
-		  return false;
-	  //if(LoggingFormatter.checkIfLastUpdateSuccessful() == true)
-		  //return false;
-	  
-	  if(runAsExternalProcess("updte") != JavaMan.correctOutputFormatMessage)
-		  return false;
-	  //if(LoggingFormatter.checkIfLastUpdateSuccessful() == true)
-		  //return false;
-	  
-	  if(runAsExternalProcess("upadte") != JavaMan.correctOutputFormatMessage)
-		  return false;
-	  //if(LoggingFormatter.checkIfLastUpdateSuccessful() == true)
-		  //return false;
-	  
-	  if(runAsExternalProcess("uPdate") != JavaMan.correctOutputFormatMessage)
-		  return false;
-	  //if(LoggingFormatter.checkIfLastUpdateSuccessful() == true)
-		  //return false;
-	  
-	  if(runAsExternalProcess("uupdate") != JavaMan.correctOutputFormatMessage)
+	  File file = new File(DEBUGFILE);
+	  file.delete();
+	  JavaMan.notRecognized();
+	  if(!(readDebugOutput().equals(JavaMan.correctOutputFormatMessage)))
 		  return false;
 	  //if(LoggingFormatter.checkIfLastUpdateSuccessful() == true)
 		  //return false;
@@ -225,7 +206,10 @@ public class Debug
   {
 	  Debug.printv("assuming no working internet connection...");
 	  Debug.printv("testing successful manual update...");
-	  if(runAsExternalProcess("update") != JavaMan.noInternetConnectionMessage)
+	  File file = new File(DEBUGFILE);
+	  file.delete();
+	  JavaMan.update();
+	  if(!(readDebugOutput().equals(JavaMan.noInternetConnectionMessage)))
 		  return false;
 	  //if(LoggingFormatter.checkIfLastUpdateSuccessful() == true)
 		  //return false;
@@ -268,6 +252,27 @@ public class Debug
 	  }catch(Exception e)
 	  {
 		  return;
+	  }
+  }
+  
+  private static String readDebugOutput()
+  {
+	  try(BufferedReader br = new BufferedReader(new FileReader(DEBUGFILE)))
+	  {
+		  StringBuilder sb = new StringBuilder();
+		  String line = br.readLine();
+
+		  while (line != null) {
+		      sb.append(line);
+		      //sb.append(System.lineSeparator());
+		      line = br.readLine();
+		  }
+		  String everything = sb.toString();
+		  return everything;
+	  }  catch(Exception e)
+	  {
+		  System.out.println("Error reading debug output");
+		  return null;
 	  }
   }
   

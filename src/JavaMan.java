@@ -72,8 +72,7 @@ public class JavaMan
 
   public static void notRecognized()
   {
-   String message = "Command not recognized.";
-   print(message);
+   print(correctOutputFormatMessage);
    //return message;
   }
   public static void access(String path)
