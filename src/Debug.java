@@ -6,15 +6,23 @@
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.InputStreamReader;
-
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.Writer;
 
 import static java.lang.ProcessBuilder.Redirect;
 
 public class Debug
 {
-  static boolean printVerbose = true;
+  public static boolean printVerbose = true;
+  public static final boolean VALIDATEOUTPUT = true;
+  public static final String DEBUGFILE = "javaman_testcase_output.txt";
+  static PrintWriter out;
   
   public static void printv(String printMessage)
   {
@@ -51,6 +59,20 @@ public class Debug
   
   private static String runAsExternalProcess(String args)
   {
+	  String[] bashcommand = new String[] {"cd \'c:\\Program Files\\Git\'; ./git-bash",
+			  " -c ", "javaman " + args};
+	  //clear the output file
+	  File file = new File(DEBUGFILE);
+	  file.delete();
+	  //try
+	  //{
+		//  PrintWriter pw = new PrintWriter("javaman_testcase_output.txt");
+	//	  pw.close();
+	 // } catch(IOException e) {
+	//	  System.out.println("Error clearing debug file");
+	//  }
+	  
+	  
 	  Process proc = null;
 	  ProcessBuilder pb = null;
 	  try
@@ -59,9 +81,9 @@ public class Debug
 		  {
 			  /*TODO: change bashcommand for linux as well*/
 			  //attempt to execute process on windows bash
-			  String[] bashcommand = new String[] {"\"C:\\Program Files\\Git\\git-bash.exe\"",
-					  " --cd-to-home",
-					  " -c ", "javaman " + args + " >> javaman_testcase_output.txt"};
+			  //String[] bashcommand = new String[] {"\"C:\\Program Files\\Git\\git-bash.exe\"",
+				//	  " --cd-to-home",
+				//	  " -c ", "javaman " + args + " >> javaman_testcase_output.txt"};
 			  //String[] bashcommand = new String[] {"\"C:\\Program Files\\Git\\git-bash.exe\"",
 			//		  "-c", "echo hello >> test.txt"};
 			  /*
@@ -70,17 +92,17 @@ public class Debug
 			   * capturing the output like it should
 			   * even with the above, it creates the file but doesn't write anything to it
 			   */
-			  System.out.println(bashcommand[0]+bashcommand[1]+bashcommand[2]+bashcommand[3]);
+			  //System.out.println(bashcommand[0]+bashcommand[1]+bashcommand[2]+bashcommand[3]);
 			  ProcessBuilder builder = new ProcessBuilder(bashcommand);
-			  builder.redirectErrorStream(true);
+			  //builder.redirectErrorStream(true);
 			  Process process = builder.start();
-			  InputStream is = process.getInputStream();
-			  BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+			  //InputStream is = process.getInputStream();
+			  //BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 
 			  String line = null;
-			  while ((line = reader.readLine()) != null) {
-			     System.out.println(line);
-			  }
+			  //while ((line = reader.readLine()) != null) {
+			  //   System.out.println(line);
+			  //}
 			  //System.out.println("we got here");
 			  //pb = new ProcessBuilder(bashcommand);
 			  //File file = new File("file1.txt");
@@ -105,15 +127,15 @@ public class Debug
 				//  Debug.printv("Error: IOException when capturing debug process output");
 			 // }
 			  //System.out.println("|" + output + "|");
-			  //proc.waitFor();
+			  process.waitFor();
 		  }
 		  catch(IOException notWindows)
 		  {
 			  try
 			  {
 				  //attempt to execute process on linux bash
-				  String[] bashcommand = new String[] {"/bin/bash",
-						  "-c", "javaman " + args};
+				  //String[] bashcommand = new String[] {"/bin/bash",
+					//	  "-c", "javaman " + args};
 				  proc = new ProcessBuilder(bashcommand).start();
 				  BufferedReader bri = new BufferedReader(new InputStreamReader(proc.getInputStream()));
 				  String outputline = null;
@@ -247,6 +269,19 @@ public class Debug
 	  {
 		  return;
 	  }
+  }
+  
+  public static void captureOutput(String output)
+  {
+	  System.out.println(output);
+	  try(FileWriter fw = new FileWriter(DEBUGFILE, true);
+			    BufferedWriter bw = new BufferedWriter(fw);
+			    PrintWriter out = new PrintWriter(bw))
+			{
+			    out.println(output);
+			} catch (IOException e) {
+			    System.out.println("Error writing to debug file");
+			}
   }
 
   public static void main(String []args)

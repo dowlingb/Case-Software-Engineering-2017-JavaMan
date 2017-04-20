@@ -85,6 +85,7 @@ elapsed sets the update flag accordingly
 
   private static void downloadDocs()
   {
+
 	  print("Downloading documentation...");
     //run the docScraper script to pull webpage data
     Runtime rt = Runtime.getRuntime();
@@ -269,6 +270,10 @@ elapsed sets the update flag accordingly
 	  }
 	  else{
 		  ui.print(msg);
+	  }
+	  if(Debug.VALIDATEOUTPUT == true)
+	  {
+		  Debug.captureOutput(msg);
 	  }
 	}
   

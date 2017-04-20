@@ -25,6 +25,7 @@ public class JavaMan
   private static boolean isUI = false;
   private static userInterface ui = null;
   
+  
   public static void main(String[] args) {
    init();
    if(args==null||args.length == 0 || args[0] == null)
@@ -72,7 +73,7 @@ public class JavaMan
   public static void notRecognized()
   {
    String message = "Command not recognized.";
-   System.out.println(message);
+   print(message);
    //return message;
   }
   public static void access(String path)
@@ -157,6 +158,10 @@ public class JavaMan
 	  }
 	  else{
 		  ui.print(msg);
+	  }
+	  if(Debug.VALIDATEOUTPUT == true)
+	  {
+		  Debug.captureOutput(msg);
 	  }
 	}
   
