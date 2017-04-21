@@ -33,9 +33,23 @@ public class ManPage
 	  //continue to find the next occurrence of the method name until line at right justification level
 	  int pageMethodStartIndex = 0;
 	  int numNewlineSpaces = 0;
+	  int temploopcounter = 0;
 	  do
-	  {
-		  pageMethodStartIndex = pageText.substring(pageMethodStartIndex).indexOf(methodName);
+	  {  
+		  //it's going back up to the top, perhaps indexof returning -1, not finding it?
+		  if(pageText.substring(pageMethodStartIndex).indexOf("\n") == -1)
+		  {
+			  JavaMan.print("Error printing method: B");
+			  return;
+		  }
+		  pageMethodStartIndex = pageMethodStartIndex + pageText.substring(pageMethodStartIndex).indexOf("\n");
+		  if(pageText.substring(pageMethodStartIndex).indexOf(methodName+"(") == -1)
+		  {
+			  JavaMan.print("Error printing method: A");
+			  return;
+		  }
+		  pageMethodStartIndex = pageMethodStartIndex + pageText.substring(pageMethodStartIndex).indexOf(methodName+"(");
+		  
 		  //if it can't be found, print the message
 		  if(pageMethodStartIndex == -1 || pageMethodStartIndex+1 >= pageText.length())
 		  {
@@ -47,11 +61,13 @@ public class ManPage
 		  numNewlineSpaces = 0;
 		  while(pageText.charAt(pageMethodNewlineIndex+numNewlineSpaces+1) == ' ')
 			  numNewlineSpaces++;
+		  if(temploopcounter++ == 4)
+			  return;
 	  }while(numNewlineSpaces != FIRSTINDENT);
 	  //go back to the beginning of the line so we get the scope and return value
 	  pageMethodStartIndex = pageText.lastIndexOf("\n", pageMethodStartIndex);
-	  
-	  /*find the end of the method's section */
+	  	  
+	  //find the end of the method's section
 	  //go to the end of the method definition marked by ')'
 	  int pageMethodEndIndex = pageMethodStartIndex;
 	  while(pageMethodEndIndex < pageText.length()
@@ -80,8 +96,8 @@ public class ManPage
 		  numNewlineSpaces = 0;
 		  while(pageText.charAt(pageMethodNewlineIndex+numNewlineSpaces+1) == ' ') //do we need the +1?
 			  numNewlineSpaces++;
-	  }while(numNewlineSpaces != FIRSTINDENT);
-	  //Debug.printv("Substring indices: " + pageMethodStartIndex + " " + pageMethodEndIndex);
+	  }while(numNewlineSpaces != FIRSTINDENT && numNewlineSpaces != 0);
+	  Debug.printv("Substring indices: " + pageMethodStartIndex + " " + pageMethodEndIndex);
 	  JavaMan.print(pageText.substring(pageMethodStartIndex, pageMethodEndIndex));
   }
   
