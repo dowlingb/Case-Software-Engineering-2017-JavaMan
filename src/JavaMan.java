@@ -8,6 +8,8 @@ import org.json.simple.JSONArray;
   import org.json.simple.JSONObject;
   import org.json.simple.parser.JSONParser;
   import org.json.simple.parser.ParseException;
+
+import com.sun.xml.internal.ws.util.StringUtils;
   
 public class JavaMan
 {
@@ -73,6 +75,27 @@ public class JavaMan
    print(correctOutputFormatMessage);
    //return message;
   }
+  
+  public static void access(String methodStr)
+  {
+	  //if it's not in the format class.method, reject it
+	  if(methodStr.length() - methodStr.replace(".", "").length() != 1)
+	  {
+		 print(correctOutputFormatMessage);
+		 return;
+	  }
+	  
+	  //TODO: need to check if class exists
+	  
+	  //extract class name and pull up the man page
+	  String classStr = methodStr.split("\\.")[0];
+	  
+	  ManPage classpage = new ManPage(classStr, null);
+	  classpage.readFile();
+	  classpage.displayMethodText(methodStr.split("\\.")[1]);
+  }
+  
+  /*
   public static void access(String path)
   {
     String filePath = path.replaceAll("\\.","/");
@@ -109,7 +132,8 @@ public class JavaMan
 	  }
 	  
   }
- 
+ */
+  
   public static void accessClass(String classStr)
   {
 	  ManPage classpage = new ManPage(classStr, null);
@@ -156,7 +180,7 @@ public class JavaMan
     Update.update(true);
   }
   
-  private static void print(String msg){
+  public static void print(String msg){
 	  if(isUI==false){
 		  System.out.println(msg);
 	  }

@@ -24,9 +24,57 @@ public class ManPage
 
   public void displayText()
   {
-     System.out.println(pageText);
+     JavaMan.print(pageText);
   }
 
+  public void displayMethodText(String methodName)
+  {
+	  /* find the beginning of the method's section */
+	  //continue to find the next occurrence of the method name until line at right justification level
+	  int pageMethodStartIndex = 0;
+	  int numNewlineSpaces = 0;
+	  do
+	  {
+		  pageMethodStartIndex = pageMethodStartIndex + pageText.indexOf(methodName);
+		  //if it can't be found, print the message
+		  if(pageMethodStartIndex == -1 || pageMethodStartIndex+1 >= pageText.length())
+		  {
+			  JavaMan.print("Class found, but method does not exist");
+			  return;
+		  }
+		  //determine number of indents, should match
+		  int pageMethodNewlineIndex = pageText.lastIndexOf("\n", pageMethodStartIndex);
+		  numNewlineSpaces = 0;
+		  while(pageText.charAt(pageMethodNewlineIndex+numNewlineSpaces+1) == ' ')
+			  numNewlineSpaces++;
+	  }while(numNewlineSpaces != FIRSTINDENT);
+	  
+	  /*find the end of the method's section */
+	  //go to the end of the method definition marked by ')'
+	  int pageMethodEndIndex = 0;
+	  while(pageMethodStartIndex+pageMethodEndIndex < pageText.length()
+			  && pageText.charAt(pageMethodStartIndex+pageMethodEndIndex) != ')')
+		  pageMethodEndIndex++;
+	  //and stop when we reach the method definition indent level again
+	  do
+	  {
+		  pageMethodEndIndex = pageMethodEndIndex + pageText.indexOf("\n");
+		  //if it can't be found, print the message
+		  if(pageMethodEndIndex == -1 || pageMethodEndIndex+1 >= pageText.length())
+		  {
+			  JavaMan.print("Error displaying method");
+			  return;
+		  }
+		  //determine number of indents, should match
+		  int pageMethodNewlineIndex = pageText.lastIndexOf("\n", pageMethodStartIndex);
+		  numNewlineSpaces = 0;
+		  while(pageText.charAt(pageMethodNewlineIndex+numNewlineSpaces+1) == ' ')
+			  numNewlineSpaces++;
+	  }while(numNewlineSpaces != FIRSTINDENT);
+	  
+	  JavaMan.print(pageText.substring(pageMethodStartIndex, pageMethodEndIndex));
+  }
+  
   /*
    * NOTE: change this to a stringbuilder later for efficiency
    * appends new lines of text to the page text
@@ -80,7 +128,7 @@ public class ManPage
       reader.close();
     }catch(IOException exception)
     {
-      System.out.println("Error reading from file");
+      JavaMan.print("Error reading from file");
       pageText = "";
       return;
     }
