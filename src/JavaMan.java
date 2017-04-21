@@ -27,7 +27,7 @@ public class JavaMan
   
   
   public static void main(String[] args) {
-   //init();
+   init();
    if(args==null||args.length == 0 || args[0] == null)
    {
      notRecognized();
@@ -50,7 +50,7 @@ public class JavaMan
       access(args[1]);
       return;
     }
-    else if(args[0].equals("accessclass") && args.length>=2)
+    else if(args[0].equals("accessClass") && args.length>=2)
     {
     	accessClass(args[1]);
     	return;
@@ -79,20 +79,23 @@ public class JavaMan
   public static void access(String methodStr)
   {
 	  //if it's not in the format class.method, reject it
-	  if(methodStr.length() - methodStr.replace(".", "").length() != 1)
+	  /*if(methodStr.length() - methodStr.replace(".", "").length() != 1)
 	  {
 		 print(correctOutputFormatMessage);
 		 return;
-	  }
+	  }*/
 	  
 	  //TODO: need to check if class exists
-	  
-	  //extract class name and pull up the man page
-	  String classStr = methodStr.split("\\.")[0];
-	  Debug.printv("From class: " + classStr);
-	  ManPage classpage = new ManPage(classStr, null);
-	  classpage.readFile();
-	  classpage.displayMethodText(methodStr.split("\\.")[1]);
+	  if(methodExists(methodStr)){ 
+		//extract class name and pull up the man page
+		//String classStr = methodStr.split("\\.")[0];
+		int methodIndex = methodStr.lastIndexOf(".");
+		String classStr = methodStr.substring(0, methodIndex);
+	  	Debug.printv("From class: " + classStr);
+	  	ManPage classpage = new ManPage(classStr, null);
+	  	classpage.readFile();
+	  	classpage.displayMethodText(methodStr.split("\\.")[1]);
+	  }
   }
   
   /*
@@ -136,6 +139,7 @@ public class JavaMan
   
   public static void accessClass(String classStr)
   {
+	  System.out.println(classExists(classStr));
 	  ManPage classpage = new ManPage(classStr, null);
 	  classpage.readFile();
 	  classpage.displayText();
@@ -216,9 +220,50 @@ public class JavaMan
       {
           e.printStackTrace();
       }
-    }
+   }
   
   	public JavaMan(){
   		init();
   	}
+  	
+  	public static boolean classExists(String path)
+  	{
+  	 String filePath = path.replaceAll("\\.","/");
+  	 filePath=filePath+".html";
+  	 for(Object o : classArray)
+  	 {
+  	  JSONObject jClass = (JSONObject) o;
+  	  if(jClass.get("href").toString().equals(filePath)){
+  	   return true;
+  	  }
+  	 }
+  	 return false;
+  	}
+  	
+  	public static boolean methodExists(String path)
+  	{
+  	 String fullPath = path.replaceAll("\\.","/");
+  	 int methodIndex = fullPath.lastIndexOf("/");
+  	 String classPath = fullPath.substring(0, methodIndex);
+  	 String method = fullPath.substring(methodIndex + 1);
+  	 classPath = classPath+".html";
+  	 for(Object o : classArray)
+  	 {
+  	  JSONObject jClass = (JSONObject) o;
+  	  if(jClass.get("href").toString().equals(classPath)){
+  	   JSONArray jMethods = (JSONArray) jClass.get("methods");
+	   for(Object b : jMethods)
+	   {
+		JSONObject jMethodObj = (JSONObject) b;
+		String methodName = (String) jMethodObj.get("name");
+		if(methodName.contains(method))
+		{
+	     return true;
+		}
+	   }
+  	  }
+  	 }
+  	 return false;
+  	}
+  	
   }

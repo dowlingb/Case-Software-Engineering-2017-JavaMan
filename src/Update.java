@@ -115,7 +115,9 @@ elapsed sets the update flag accordingly
     	{
     		//set up the manpage object and json object
     		JSONObject jClass = (JSONObject) o;
-    		String classname = (String)jClass.get("name");
+    		String classname = jClass.get("href").toString().replaceAll("/",".");
+    		classname = classname.substring(0, classname.length() - 5);
+    		System.out.println(classname);
     		classname = processDocString(classname);
     		manpage = new ManPage(classname,"");
     		
