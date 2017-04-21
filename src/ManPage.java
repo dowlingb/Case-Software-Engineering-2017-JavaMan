@@ -33,9 +33,10 @@ public class ManPage
 	  //continue to find the next occurrence of the method name until line at right justification level
 	  int pageMethodStartIndex = 0;
 	  int numNewlineSpaces = 0;
+	  //System.out.println(methodName);
 	  do
 	  {
-		  pageMethodStartIndex = pageMethodStartIndex + pageText.indexOf(methodName);
+		  pageMethodStartIndex = pageText.substring(pageMethodStartIndex).indexOf(methodName);
 		  //if it can't be found, print the message
 		  if(pageMethodStartIndex == -1 || pageMethodStartIndex+1 >= pageText.length())
 		  {
@@ -51,14 +52,14 @@ public class ManPage
 	  
 	  /*find the end of the method's section */
 	  //go to the end of the method definition marked by ')'
-	  int pageMethodEndIndex = 0;
-	  while(pageMethodStartIndex+pageMethodEndIndex < pageText.length()
-			  && pageText.charAt(pageMethodStartIndex+pageMethodEndIndex) != ')')
+	  int pageMethodEndIndex = pageMethodStartIndex;
+	  while(pageMethodEndIndex < pageText.length()
+			  && pageText.charAt(pageMethodEndIndex) != ')')
 		  pageMethodEndIndex++;
 	  //and stop when we reach the method definition indent level again
 	  do
 	  {
-		  pageMethodEndIndex = pageMethodEndIndex + pageText.indexOf("\n");
+		  pageMethodEndIndex = pageText.substring(pageMethodEndIndex).indexOf("\n");
 		  //if it can't be found, print the message
 		  if(pageMethodEndIndex == -1 || pageMethodEndIndex+1 >= pageText.length())
 		  {
@@ -66,12 +67,12 @@ public class ManPage
 			  return;
 		  }
 		  //determine number of indents, should match
-		  int pageMethodNewlineIndex = pageText.lastIndexOf("\n", pageMethodStartIndex);
+		  int pageMethodNewlineIndex = pageText.lastIndexOf("\n", pageMethodEndIndex);
 		  numNewlineSpaces = 0;
 		  while(pageText.charAt(pageMethodNewlineIndex+numNewlineSpaces+1) == ' ')
 			  numNewlineSpaces++;
 	  }while(numNewlineSpaces != FIRSTINDENT);
-	  
+	  Debug.printv(pageMethodStartIndex + " " + pageMethodEndIndex);
 	  JavaMan.print(pageText.substring(pageMethodStartIndex, pageMethodEndIndex));
   }
   
