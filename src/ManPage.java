@@ -33,7 +33,6 @@ public class ManPage
 	  //continue to find the next occurrence of the method name until line at right justification level
 	  int pageMethodStartIndex = 0;
 	  int numNewlineSpaces = 0;
-	  //System.out.println(methodName);
 	  do
 	  {
 		  pageMethodStartIndex = pageText.substring(pageMethodStartIndex).indexOf(methodName);
@@ -49,6 +48,8 @@ public class ManPage
 		  while(pageText.charAt(pageMethodNewlineIndex+numNewlineSpaces+1) == ' ')
 			  numNewlineSpaces++;
 	  }while(numNewlineSpaces != FIRSTINDENT);
+	  //go back to the beginning of the line so we get the scope and return value
+	  pageMethodStartIndex = pageText.lastIndexOf("\n", pageMethodStartIndex);
 	  
 	  /*find the end of the method's section */
 	  //go to the end of the method definition marked by ')'
@@ -59,20 +60,28 @@ public class ManPage
 	  //and stop when we reach the method definition indent level again
 	  do
 	  {
-		  pageMethodEndIndex = pageText.substring(pageMethodEndIndex).indexOf("\n");
-		  //if it can't be found, print the message
-		  if(pageMethodEndIndex == -1 || pageMethodEndIndex+1 >= pageText.length())
+		  if(pageMethodEndIndex+1 >= pageText.length())
 		  {
 			  JavaMan.print("Error displaying method");
 			  return;
 		  }
+		  int pageMethodNewlineOffset = (pageText.substring(pageMethodEndIndex+1)).indexOf("\n")+1;
+		  //if it can't be found, print the message
+		  if(pageMethodNewlineOffset == -1
+				  || pageMethodEndIndex+pageMethodNewlineOffset+1 >= pageText.length())
+		  {
+			  JavaMan.print("Error displaying method");
+			  return;
+		  }
+		  pageMethodEndIndex = pageMethodEndIndex + pageMethodNewlineOffset;
+		  
 		  //determine number of indents, should match
-		  int pageMethodNewlineIndex = pageText.lastIndexOf("\n", pageMethodEndIndex);
+		  int pageMethodNewlineIndex = pageMethodEndIndex;//pageText.lastIndexOf("\n", pageMethodEndIndex);
 		  numNewlineSpaces = 0;
-		  while(pageText.charAt(pageMethodNewlineIndex+numNewlineSpaces+1) == ' ')
+		  while(pageText.charAt(pageMethodNewlineIndex+numNewlineSpaces+1) == ' ') //do we need the +1?
 			  numNewlineSpaces++;
 	  }while(numNewlineSpaces != FIRSTINDENT);
-	  Debug.printv(pageMethodStartIndex + " " + pageMethodEndIndex);
+	  //Debug.printv("Substring indices: " + pageMethodStartIndex + " " + pageMethodEndIndex);
 	  JavaMan.print(pageText.substring(pageMethodStartIndex, pageMethodEndIndex));
   }
   

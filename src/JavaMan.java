@@ -89,7 +89,7 @@ public class JavaMan
 	  
 	  //extract class name and pull up the man page
 	  String classStr = methodStr.split("\\.")[0];
-	  Debug.printv(classStr);
+	  Debug.printv("From class: " + classStr);
 	  ManPage classpage = new ManPage(classStr, null);
 	  classpage.readFile();
 	  classpage.displayMethodText(methodStr.split("\\.")[1]);
