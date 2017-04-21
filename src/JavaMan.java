@@ -3,10 +3,8 @@
  * This is the main class for accessing and running the javaman program
  * */
   import java.io.*;
-  import java.io.FileNotFoundException;
-  import java.io.FileReader;
-  import java.io.IOException;
-  import org.json.simple.JSONArray;
+
+import org.json.simple.JSONArray;
   import org.json.simple.JSONObject;
   import org.json.simple.parser.JSONParser;
   import org.json.simple.parser.ParseException;
@@ -27,7 +25,7 @@ public class JavaMan
   
   
   public static void main(String[] args) {
-   init();
+   //init();
    if(args==null||args.length == 0 || args[0] == null)
    {
      notRecognized();
@@ -111,7 +109,14 @@ public class JavaMan
 	  }
 	  
   }
-  
+ 
+  public static void accessClass(String classStr)
+  {
+	  ManPage classpage = new ManPage(classStr, null);
+	  classpage.readFile();
+	  classpage.displayText();
+  }
+  /*
   public static void accessClass(String classStr){
 	  for(Object o : classArray)
 	  {
@@ -145,7 +150,7 @@ public class JavaMan
 		  }
 	  }
   }
-
+*/
   public static void update()
   {
     Update.update(true);
@@ -170,6 +175,7 @@ public class JavaMan
 	  Update.setUI(importedUI);
   }
   
+  //is there a reason we need this or was it just for testing? --Brennan
   public static void init()
   {
 	  try
