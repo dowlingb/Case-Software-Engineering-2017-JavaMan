@@ -23,7 +23,8 @@ public class Update
   static int minAutoUpdateTime = 0; //minimum time to trigger automatic update
   static Logger logger = Logger.getLogger("JavaMan.Update");
   static Handler fileHandler;
-  static LoggingFormatter formatter;
+  static LoggingFormatter formatter = new LoggingFormatter();
+  static LocaDateTime lastSuccessUpdate;
   //added a new boolean isUI to determine if it's in UI.   @author Yiming Pan. 
   static boolean isUI = false;
   static userInterface ui = null;
@@ -239,20 +240,24 @@ elapsed sets the update flag accordingly
   }
 
   /**
-   * Logs if the update is succeful or unsuccessful
+   * Logs if the update is successful or unsuccessful
    * @param result the string of successful or unsuccessful
    */
   private static void logUpdate(String result)
   {
-    try{
-      fileHandler = new FileHandler("update.log");
-      formatter = new LoggingFormatter();
-      fileHandler.setFormatter(formatter);
-      logger.addHandler(fileHandler);
-      logger.info("Update " + result);
-    } catch(Exception e){
-      e.printStackTrace();
+    if(fileHandler == null)
+    {
+      try{
+        fileHandler = new FileHandler("update.log");
+        fileHandler.setFormatter(formatter);
+        logger.addHandler(fileHandler);
+      } catch(Exception e){
+        e.printStackTrace();
+      }
     }
+    logger.info("Update " + result);
+    if(result.equals("successful"))
+      lastSuccessUpdate = LocalDateTime.now();
   }
 
   private static void displayErrorNoInternet()
