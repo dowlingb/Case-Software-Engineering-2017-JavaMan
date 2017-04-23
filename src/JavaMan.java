@@ -86,7 +86,7 @@ public class JavaMan
 	  }*/
 	  
 	  //TODO: need to check if class exists
-	  if(methodExists(methodStr)){ 
+	  //if(methodExists(methodStr)){ 
 		//extract class name and pull up the man page
 		//String classStr = methodStr.split("\\.")[0];
 		int methodIndex = methodStr.lastIndexOf(".");
@@ -95,7 +95,7 @@ public class JavaMan
 	  	ManPage classpage = new ManPage(classStr, null);
 	  	classpage.readFile();
 	  	classpage.displayMethodText(methodStr.split("\\.")[1]);
-	  }
+	  //}
   }
   
   /*

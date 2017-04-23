@@ -24,7 +24,7 @@ public class Update
   static Logger logger = Logger.getLogger("JavaMan.Update");
   static Handler fileHandler;
   static LoggingFormatter formatter = new LoggingFormatter();
-  static LocaDateTime lastSuccessUpdate;
+  static LocalDateTime lastSuccessUpdate;
   //added a new boolean isUI to determine if it's in UI.   @author Yiming Pan. 
   static boolean isUI = false;
   static userInterface ui = null;
