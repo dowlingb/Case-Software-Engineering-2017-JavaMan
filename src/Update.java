@@ -44,7 +44,7 @@ elapsed sets the update flag accordingly
     //-1 if the datetimes are =
     if(timeSinceLastUpdate >= minAutoUpdateTime || timeSinceLastUpdate == -1)
     {
-    	print("Triggered automatic update...");
+    	JavaMan.print("Triggered automatic update...");
       autoUpdate = true;
       return true;
     }
@@ -78,7 +78,7 @@ elapsed sets the update flag accordingly
       }
     }catch(MalformedURLException malformedurl)
     {
-    	print("Error: malformed URL");
+    	JavaMan.print("Error: malformed URL");
       System.exit(1);
     }
     return true;
@@ -87,23 +87,23 @@ elapsed sets the update flag accordingly
   private static void downloadDocs()
   {
 
-	  print("Downloading documentation...");
+	  JavaMan.print("Downloading documentation...");
     //run the docScraper script to pull webpage data
     Runtime rt = Runtime.getRuntime();
     try{
-        //Process proc = rt.exec("casperjs docScraper.js");
-        //BufferedReader input = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-        //String line=null;
-        //while((line=input.readLine()) != null) {
-        //  System.out.println(line);
-        //}
-        //int exitVal = proc.waitFor();
-        //System.out.println("Exited with error code "+exitVal);
+        Process proc = rt.exec("casperjs docScraper.js");
+        BufferedReader input = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+        String line=null;
+        while((line=input.readLine()) != null) {
+          JavaMan.print(line);
+        }
+        int exitVal = proc.waitFor();
+        JavaMan.print("Exited with error code "+exitVal);
     }catch(Exception ex){
         ex.printStackTrace();
     }
     
-    print("Formatting documentation...");
+    JavaMan.print("Formatting documentation...");
     //read from that JSON file and convert to plaintext
     try
     {
@@ -118,7 +118,7 @@ elapsed sets the update flag accordingly
     		JSONObject jClass = (JSONObject) o;
     		String classname = jClass.get("href").toString().replaceAll("/",".");
     		classname = classname.substring(0, classname.length() - 5);
-    		System.out.println(classname);
+    		//JavaMan.print(classname);
     		classname = processDocString(classname);
     		manpage = new ManPage(classname,"");
     		
@@ -172,18 +172,18 @@ elapsed sets the update flag accordingly
     	}
     } catch (FileNotFoundException e)
     {
-    	print("Error: JSON file not found");
+    	JavaMan.print("Error: JSON file not found");
     } catch (IOException e)
     {
-    	print("Error: IOException reading from JSON file");
+    	JavaMan.print("Error: IOException reading from JSON file");
     } catch (ParseException e)
     {
-    	print("Error: Cannot parse JSON file");
+    	JavaMan.print("Error: Cannot parse JSON file");
     }
     
     //put that formatted text data into a ManPage object and call its write method
     
-    print("Finished updating documentation.");
+    JavaMan.print("Finished updating documentation.");
   }
 
   //scrubs a scraped doc string of newlines and other unwanted formatting
@@ -262,7 +262,7 @@ elapsed sets the update flag accordingly
 
   private static void displayErrorNoInternet()
   {
-	  print("Error: Cannot connect to the online documentation for"
+	  JavaMan.print("Error: Cannot connect to the online documentation for"
       + " update");
   }
 
@@ -270,19 +270,6 @@ elapsed sets the update flag accordingly
 	  isUI = true;
 	  ui = importedUI;
   }
-  
-  private static void print(String msg){
-	  if(isUI==false){
-		  System.out.println(msg);
-	  }
-	  else{
-		  ui.print(msg);
-	  }
-	  if(Debug.VALIDATEOUTPUT == true)
-	  {
-		  Debug.captureOutput(msg);
-	  }
-	}
   
   public static void main(String []args)
   {

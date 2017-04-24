@@ -170,7 +170,7 @@ public class ManPage
       writer.close();
     }catch(IOException exception)
     {
-      System.out.println("Error writing to file");
+      JavaMan.print("Error writing to file");
     }
   }
   

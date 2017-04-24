@@ -65,7 +65,7 @@ public class JavaMan
   public static String help()
   {
    String message = "Enter command to update using \"update\" or access a class using \"access <class path>\" where class path is formatted as java.lang.String";
-   System.out.println(message);
+   print(message);
    return message;
 	  
   }
@@ -106,7 +106,7 @@ public class JavaMan
 	 for(Object o : classArray)
 	 {
 	  JSONObject jClass = (JSONObject) o;
-	  //System.out.println(jClass.get("name"));
+	  //print(jClass.get("name"));
 	  if(jClass.get("href").toString().equals(filePath)){
 		  print("Class: ");
 		  print("\t" + jClass.get("name"));
@@ -121,7 +121,7 @@ public class JavaMan
   		  }
   		  
   		  JSONArray jMethods = (JSONArray) jClass.get("methods");
-  		  System.out.println("Methods: ");
+  		  print("Methods: ");
   		  for(Object b : jMethods)
   		  {
   			  JSONObject jMethodObj = (JSONObject) b;
@@ -139,7 +139,8 @@ public class JavaMan
   
   public static void accessClass(String classStr)
   {
-	  System.out.println(classExists(classStr));
+	  if(classExists(classStr))
+		  print("true");
 	  ManPage classpage = new ManPage(classStr, null);
 	  classpage.readFile();
 	  classpage.displayText();
@@ -149,7 +150,7 @@ public class JavaMan
 	  for(Object o : classArray)
 	  {
 		  JSONObject jClass = (JSONObject) o;
-		  //System.out.println(jClass.get("name"));
+		  //print(jClass.get("name"));
 		  if(jClass.get("name").toString().equals(classStr)){
 			  print("Class: ");
 			  print("\t" + jClass.get("name"));
@@ -165,7 +166,7 @@ public class JavaMan
     		  }
     		  
     		  JSONArray jMethods = (JSONArray) jClass.get("methods");
-    		  System.out.println("Methods: ");
+    		  print("Methods: ");
     		  for(Object b : jMethods)
     		  {
     			  JSONObject jMethodObj = (JSONObject) b;
