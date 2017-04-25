@@ -94,7 +94,7 @@ public class JavaMan
 	  	Debug.printv("From class: " + classStr);
 	  	ManPage classpage = new ManPage(classStr, null);
 	  	classpage.readFile();
-	  	classpage.displayMethodText(methodStr.split("\\.")[1]);
+	  	classpage.displayMethodText(methodStr.substring(methodIndex+1,methodStr.length()));
 	  //}
   }
   
