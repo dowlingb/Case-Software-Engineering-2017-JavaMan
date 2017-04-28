@@ -32,7 +32,7 @@ public class JavaMan
   private static boolean isUI = false;
   private static userInterface ui = null;
   
-  
+  //The main class which allows running from the terminal
   public static void main(String[] args) {
    init();
    if(Update.checkAutoUpdateCondition() == true)
@@ -71,6 +71,53 @@ public class JavaMan
    }
   }
 
+	
+	  //Main constructor for JavaMan
+  	public JavaMan(){
+  		init();
+  	}
+  	
+	
+  	public static boolean classExists(String path)
+  	{
+  	 String filePath = path.replaceAll("\\.","/");
+  	 filePath=filePath+".html";
+  	 for(Object o : classArray)
+  	 {
+  	  JSONObject jClass = (JSONObject) o;
+  	  if(jClass.get("href").toString().equals(filePath)){
+  	   return true;
+  	  }
+  	 }
+  	 return false;
+  	}
+  	
+  	public static boolean methodExists(String path)
+  	{
+  	 String fullPath = path.replaceAll("\\.","/");
+  	 int methodIndex = fullPath.lastIndexOf("/");
+  	 String classPath = fullPath.substring(0, methodIndex);
+  	 String method = fullPath.substring(methodIndex + 1);
+  	 classPath = classPath+".html";
+  	 for(Object o : classArray)
+  	 {
+  	  JSONObject jClass = (JSONObject) o;
+  	  if(jClass.get("href").toString().equals(classPath)){
+  	   JSONArray jMethods = (JSONArray) jClass.get("methods");
+	   for(Object b : jMethods)
+	   {
+		JSONObject jMethodObj = (JSONObject) b;
+		String methodName = (String) jMethodObj.get("name");
+		if(methodName.contains(method))
+		{
+	     return true;
+		}
+	   }
+  	  }
+  	 }
+  	 return false;
+  	}
+//Outputs help message and also returns message if needed.
   public static String help()
   {
    String message = correctOutputFormatMessage;
@@ -80,12 +127,14 @@ public class JavaMan
 	  
   }
 
+	//Called when a command is not recognized
   public static void notRecognized()
   {
    print(correctOutputFormatMessage);
    //return message;
   }
   
+	//General access message for methods. Not for classes
   public static void access(String methodStr)
   {
 	  //if it's not in the format class.method, reject it
@@ -146,7 +195,8 @@ public class JavaMan
 	  
   }
  */
-  
+	
+  //Accesses documentation for a class of name classStr
   public static void accessClass(String classStr)
   {
 	  if(classExists(classStr))
@@ -190,11 +240,13 @@ public class JavaMan
 	  }
   }
 */
+	//Updates the documnentation from the website
   public static void update()
   {
     Update.update(true);
   }
   
+	//Prints the message to the UI or to the console, depending on which is in use.
   public static void print(String msg){
 	  if(isUI==false){
 		  System.out.println(msg);
@@ -207,14 +259,14 @@ public class JavaMan
 		  Debug.captureOutput(msg);
 	  }
 	}
-  
+  //Sets the ui
   public void setUI(userInterface importedUI){
 	  isUI = true;
 	  ui = importedUI;
 	  Update.setUI(importedUI);
   }
   
-  //is there a reason we need this or was it just for testing? --Brennan
+  //Initializes javaman
   public static void init()
   {
 	  try
@@ -232,49 +284,6 @@ public class JavaMan
           e.printStackTrace();
       }
    }
-  
-  	public JavaMan(){
-  		init();
-  	}
-  	
-  	public static boolean classExists(String path)
-  	{
-  	 String filePath = path.replaceAll("\\.","/");
-  	 filePath=filePath+".html";
-  	 for(Object o : classArray)
-  	 {
-  	  JSONObject jClass = (JSONObject) o;
-  	  if(jClass.get("href").toString().equals(filePath)){
-  	   return true;
-  	  }
-  	 }
-  	 return false;
-  	}
-  	
-  	public static boolean methodExists(String path)
-  	{
-  	 String fullPath = path.replaceAll("\\.","/");
-  	 int methodIndex = fullPath.lastIndexOf("/");
-  	 String classPath = fullPath.substring(0, methodIndex);
-  	 String method = fullPath.substring(methodIndex + 1);
-  	 classPath = classPath+".html";
-  	 for(Object o : classArray)
-  	 {
-  	  JSONObject jClass = (JSONObject) o;
-  	  if(jClass.get("href").toString().equals(classPath)){
-  	   JSONArray jMethods = (JSONArray) jClass.get("methods");
-	   for(Object b : jMethods)
-	   {
-		JSONObject jMethodObj = (JSONObject) b;
-		String methodName = (String) jMethodObj.get("name");
-		if(methodName.contains(method))
-		{
-	     return true;
-		}
-	   }
-  	  }
-  	 }
-  	 return false;
-  	}
+
   	
   }
