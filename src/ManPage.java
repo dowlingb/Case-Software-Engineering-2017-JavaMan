@@ -22,11 +22,13 @@ public class ManPage
     fileName = file;
   }
 
+//Displays text to console or UI dependant on which is in use.
   public void displayText()
   {
      JavaMan.print(pageText);
   }
 
+//Displays text for the method formatted into the correct configuration in either the console or the UI	
   public void displayMethodText(String methodName)
   {
 	  /* find the beginning of the method's section */
@@ -101,10 +103,7 @@ public class ManPage
 	  JavaMan.print(pageText.substring(pageMethodStartIndex, pageMethodEndIndex));
   }
   
-  /*
-   * NOTE: change this to a stringbuilder later for efficiency
-   * appends new lines of text to the page text
-   */
+//Appends new lines of text to the page text, with correct justification
   public void append(String additionalPageText, Justification justification)
   {
 	  //format justification
@@ -138,6 +137,7 @@ public class ManPage
 	  pageText += additionalPageText;
   }
   
+//Reads data from the file
   public void readFile()
   {
     String filelinestring = null;
@@ -161,6 +161,7 @@ public class ManPage
     pageText = filetextstringbuilder.toString();
   }
 
+//Writes data to the file
   public void writeFile()
   {
     try
