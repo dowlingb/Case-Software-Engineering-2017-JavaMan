@@ -5,6 +5,7 @@
  * downloaded documentation
  * */
 import java.io.*;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.net.URL;
@@ -21,7 +22,7 @@ public class Update
 {
   static boolean autoUpdate;
   static ManPage[] docs;
-  static int minAutoUpdateTime = 0; //minimum time to trigger automatic update
+  static Duration minAutoUpdateTime = Duration.ofSeconds(60); //minimum time to trigger automatic update
   static Logger logger = Logger.getLogger("JavaMan.Update");
   static Handler fileHandler;
   static LoggingFormatter formatter = new LoggingFormatter();
@@ -44,23 +45,33 @@ elapsed sets the update flag accordingly
 	try
 	{
 		BufferedReader reader = new BufferedReader(new FileReader("update.log"));
-		String lastsuccessfulupdatestr;
-		lastsuccessfulupdatestr = reader.readLine().substring(0, 27);
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-		LocalDateTime dateTime = LocalDateTime.parse(lastsuccessfulupdatestr);
+		String lastSuccessfulUpdateStr;
+		lastSuccessfulUpdateStr = reader.readLine();
+		if(lastSuccessfulUpdateStr.length() < 23)
+		{
+			JavaMan.print("Triggered automatic update...");
+		    autoUpdate = true;
+		    return true;
+		}
+		lastSuccessfulUpdateStr = lastSuccessfulUpdateStr.substring(0, 23);
+		LocalDateTime lastSuccessfulUpdate = LocalDateTime.parse(lastSuccessfulUpdateStr);
+		
+		Duration timeSinceLastUpdate = Duration.between(lastSuccessfulUpdate, LocalDateTime.now());
+	    //-1 if the datetimes are =
+		System.out.println(timeSinceLastUpdate);
+	    if(timeSinceLastUpdate.minus(minAutoUpdateTime).compareTo(Duration.ZERO) == -1)
+	    {
+	    	JavaMan.print("Triggered automatic update...");
+	    	autoUpdate = true;
+	    	return true;
+	    }
+	    
 	} catch (IOException e) {
 		JavaMan.print("Error checking automatic update condition.");
 		e.printStackTrace();
 	}
 	
-    int timeSinceLastUpdate = LocalDateTime.now().compareTo(LocalDateTime.now());
-    //-1 if the datetimes are =
-    if(timeSinceLastUpdate >= minAutoUpdateTime || timeSinceLastUpdate == -1)
-    {
-    	JavaMan.print("Triggered automatic update...");
-      autoUpdate = true;
-      return true;
-    }
+    
     autoUpdate = false;
     return false;
   }
