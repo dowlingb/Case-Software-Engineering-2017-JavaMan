@@ -1,3 +1,4 @@
+var require = patchRequire(require);
 var casper = require('casper').create();
 var x = require('casper').selectXPath;
 var fs = require('fs');

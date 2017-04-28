@@ -90,8 +90,9 @@ elapsed sets the update flag accordingly
 	  JavaMan.print("Downloading documentation...");
     //run the docScraper script to pull webpage data
     Runtime rt = Runtime.getRuntime();
+    //try to run the windows version, if that fails try linux
     try{
-        Process proc = rt.exec("cmd /c cd battest & start build.bat");
+        Process proc = rt.exec("cmd /c cd battest & start build.bat & exit");
         BufferedReader input = new BufferedReader(new InputStreamReader(proc.getInputStream()));
         String line=null;
         while((line=input.readLine()) != null) {
@@ -99,8 +100,23 @@ elapsed sets the update flag accordingly
         }
         int exitVal = proc.waitFor();
         JavaMan.print("Exited with error code "+exitVal);
-    }catch(Exception ex){
-        ex.printStackTrace();
+    }catch(Exception failedWindows){
+    	try
+    	{
+    		Process proc = rt.exec("cmd /c cd battest & start build.bat");
+            BufferedReader input = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+            String line=null;
+            while((line=input.readLine()) != null) {
+              JavaMan.print(line);
+            }
+            int exitVal = proc.waitFor();
+            JavaMan.print("Exited with error code "+exitVal);
+    	}catch(Exception failedLinux)
+    	{
+    		logUpdate(false);
+    		failedLinux.printStackTrace();
+    		return;
+    	}
     }
     
     JavaMan.print("Formatting documentation...");
@@ -173,16 +189,22 @@ elapsed sets the update flag accordingly
     } catch (FileNotFoundException e)
     {
     	JavaMan.print("Error: JSON file not found");
+    	logUpdate(false);
+    	return;
     } catch (IOException e)
     {
     	JavaMan.print("Error: IOException reading from JSON file");
+    	logUpdate(false);
+    	return;
     } catch (ParseException e)
     {
     	JavaMan.print("Error: Cannot parse JSON file");
+    	logUpdate(false);
+    	return;
     }
     
     //put that formatted text data into a ManPage object and call its write method
-    
+    logUpdate(true);
     JavaMan.print("Finished updating documentation.");
   }
 
@@ -241,9 +263,8 @@ elapsed sets the update flag accordingly
 
   /**
    * Logs if the update is successful or unsuccessful
-   * @param result the string of successful or unsuccessful
    */
-  private static void logUpdate(String result)
+  private static void logUpdate(boolean success)
   {
     if(fileHandler == null)
     {
@@ -255,8 +276,8 @@ elapsed sets the update flag accordingly
         e.printStackTrace();
       }
     }
-    logger.info("Update " + result);
-    if(result.equals("successful"))
+    logger.info("Was successful: " + success);
+    if(success == false)
       lastSuccessUpdate = LocalDateTime.now();
   }
 

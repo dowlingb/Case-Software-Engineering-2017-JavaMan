@@ -35,6 +35,8 @@ public class JavaMan
   
   public static void main(String[] args) {
    init();
+   if(Update.checkAutoUpdateCondition() == true)
+	   Update.update(false);
    if(args==null||args.length == 0 || args[0] == null)
    {
      notRecognized();
