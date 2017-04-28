@@ -16,8 +16,15 @@ public class JavaMan
   public static String home = File.listRoots()[0].toString();//hypothetically should work indepentant of operating system as long as the files are in the home folder
   //"c:" + File.separatorChar; <for windows
   public static JSONArray classArray;
-  public static String correctOutputFormatMessage = "The correct format for printing "
-		  + "commands is blah blah blah";
+  public static String correctOutputFormatMessage = "To find documentation for a class: type "
+  		+ "[COMMAND] into the terminal and the corresponding man page file will be printed to "
+  		+ "it.\n\nTo find documentation for a method/constructor: type [COMMAND] into the "
+  		+ "terminal and the corresponding man page file will be printed to it.\n\nTo update "
+  		+ "the documentation database: Javaman is configured to automatically update itself "
+  		+ "when it is run if its log indicates enough time has passed since its last update. "
+  		+ " However, a manual update can also be initiated by typing [COMMAND] into the "
+  		+ "terminal.\n\nTo view help: type [COMMAND] into the terminal and a help blurb will "
+  		+ "be printed to it.";
   public static String noInternetConnectionMessage = "There is no network connection.  "
 		  + "Please connect to the internet so updates can complete.";
   
@@ -64,7 +71,8 @@ public class JavaMan
 
   public static String help()
   {
-   String message = "Enter command to update using \"update\" or access a class using \"access <class path>\" where class path is formatted as java.lang.String";
+   String message = correctOutputFormatMessage;
+   //"Enter command to update using \"update\" or access a class using \"access <class path>\" where class path is formatted as java.lang.String";
    print(message);
    return message;
 	  

@@ -91,14 +91,14 @@ elapsed sets the update flag accordingly
     //run the docScraper script to pull webpage data
     Runtime rt = Runtime.getRuntime();
     try{
-        Process proc = rt.exec("casperjs docScraper.js");
-        BufferedReader input = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-        String line=null;
-        while((line=input.readLine()) != null) {
-          JavaMan.print(line);
-        }
-        int exitVal = proc.waitFor();
-        JavaMan.print("Exited with error code "+exitVal);
+        //Process proc = rt.exec("casperjs test ./docScraper.js");
+        //BufferedReader input = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+        //String line=null;
+        //while((line=input.readLine()) != null) {
+        //  JavaMan.print(line);
+        //}
+        //int exitVal = proc.waitFor();
+        //JavaMan.print("Exited with error code "+exitVal);
     }catch(Exception ex){
         ex.printStackTrace();
     }

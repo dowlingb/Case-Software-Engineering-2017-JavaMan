@@ -20,7 +20,7 @@ import static java.lang.ProcessBuilder.Redirect;
 
 public class Debug
 {
-  public static boolean printVerbose = true;
+  public static boolean printVerbose = false;
   public static final boolean VALIDATEOUTPUT = true;
   public static final String DEBUGFILE = "javaman_testcase_output.txt";
   static PrintWriter out;

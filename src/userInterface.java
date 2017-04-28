@@ -153,7 +153,24 @@ public class userInterface extends JFrame {
 	
 	private class helpListener implements ActionListener{
 		public void actionPerformed(ActionEvent e){
-			textArea.append("Enter command to update using \"update\" or access a class using \"access <class path>\" where class path is formatted as java.lang.String");
+			textArea.append("To find documentation for a class: Type the name of the class "
+					+"with its full path name (eg java.lang.String) into the Access Class "
+					+"textbox and click the “Go” button to the right of it.  The "
+					+ "corresponding man page file will be printed to the text output "
+					+ "field below. \n\nTo find documentation for a method/constructor: Type "
+					+ "the name of the method with its full path name "
+					+ "(eg java.lang.String.charAt) into the Access textbox and click the "
+					+ "“Go” button to the right of it.  The corresponding man page file "
+					+ "will be printed to the text output field below. \n\nTo update the "
+					+ "documentation database: Javaman is configured to automatically "
+					+ "update itself when it is run if its log indicates enough time has "
+					+ "passed since its last update.  However, a manual update can also be "
+					+ "initiated by selecting “Update” from the “Options” dropdown menu. "
+					+ "This may cause the program to stall for a time as a full update can "
+					+ "take over a minute to complete. \n\nTo view help: The user can view a "
+					+ "short help blurb for how to use Javaman by selecting the “Help” "
+					+ "option from the “Options” dropdown menu.  The help blurb is "
+					+ "printed to the text output field below.");
 		}
 	}
 	
