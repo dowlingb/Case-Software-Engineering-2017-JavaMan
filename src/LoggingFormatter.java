@@ -4,6 +4,7 @@
  * of how the message will be logged in the log file.
  */
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
@@ -18,7 +19,7 @@ public class LoggingFormatter extends Formatter
   @Override
   public String format(LogRecord record)
   {
-    return new Date(record.getMillis()) + "::" + record.getSourceClassName() + ": " 
+    return LocalDateTime.now().toString() + ": " 
       + record.getMessage() + "\n";
   }
 }

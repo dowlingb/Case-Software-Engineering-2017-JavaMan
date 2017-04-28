@@ -6,6 +6,7 @@
  * */
 import java.io.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.MalformedURLException;
@@ -40,6 +41,18 @@ elapsed sets the update flag accordingly
   {
     //TODO: check system clock with last update time in log file to see if
     //update needed, rn just runs always
+	try
+	{
+		BufferedReader reader = new BufferedReader(new FileReader("update.log"));
+		String lastsuccessfulupdatestr;
+		lastsuccessfulupdatestr = reader.readLine().substring(0, 27);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		LocalDateTime dateTime = LocalDateTime.parse(lastsuccessfulupdatestr);
+	} catch (IOException e) {
+		JavaMan.print("Error checking automatic update condition.");
+		e.printStackTrace();
+	}
+	
     int timeSinceLastUpdate = LocalDateTime.now().compareTo(LocalDateTime.now());
     //-1 if the datetimes are =
     if(timeSinceLastUpdate >= minAutoUpdateTime || timeSinceLastUpdate == -1)
