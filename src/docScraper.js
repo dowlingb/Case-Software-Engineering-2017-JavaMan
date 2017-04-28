@@ -56,7 +56,7 @@ casper.waitForText('All Classes', function(){
 }, 10000);
 
 casper.then(function(){
-	casper.repeat(/*classes.length*/ 500, function(){
+	casper.repeat(classes.length, function(){
 		this.thenOpen(rootUrl + classes[i].href, function(){
 			var constIndex = 2;
 			while(this.exists(x('/html/body/div[4]/div[2]//a[@name="constructor.summary"]/../table/tbody/tr[' + constIndex + ']/td/code'))){
@@ -73,14 +73,12 @@ casper.then(function(){
 			var method = this.fetchText(x('//*[@id="i'+ methIndex +'"]/td[2]/code')).replace(/\u00a0/g, " ");
 			var mdescription = this.fetchText(x('//*[@id="i'+ methIndex +'"]/td[2]/div')).replace(/\u00a0/g, " ");
 			var modAndType = this.fetchText(x('//*[@id="i'+ methIndex +'"]/td[1]')).replace(/\u00a0/g, " ");
-			//console.log(modAndType + ": "+ method + ": " + mdescription);
 			while(method != null){
 				
 				if(this.exists(x('//*[@id="i'+ methIndex +'"]'))){
 					method = this.fetchText(x('//*[@id="i'+ methIndex +'"]/td[2]/code')).replace(/\u00a0/g, " ");
 					mdescription = this.fetchText(x('//*[@id="i'+ methIndex +'"]/td[2]/div')).replace(/\u00a0/g, " ");
 					modAndType = this.fetchText(x('//*[@id="i'+ methIndex +'"]/td[1]')).replace(/\u00a0/g, " ");
-					//console.log(modAndType +": "+ method + ": " + mdescription);
 					methObj = new Method();
 					methObj.name = method;
 					methObj.description = mdescription;
