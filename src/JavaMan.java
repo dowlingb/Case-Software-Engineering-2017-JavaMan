@@ -17,13 +17,13 @@ public class JavaMan
   //"c:" + File.separatorChar; <for windows
   public static JSONArray classArray;
   public static String correctOutputFormatMessage = "To find documentation for a class: type "
-  		+ "[COMMAND] into the terminal and the corresponding man page file will be printed to "
-  		+ "it.\n\nTo find documentation for a method/constructor: type [COMMAND] into the "
+  		+ "[accessClass] into the terminal and the corresponding man page file will be printed "
+  		+ "to it.\n\nTo find documentation for a method/constructor: type [access] into the "
   		+ "terminal and the corresponding man page file will be printed to it.\n\nTo update "
   		+ "the documentation database: Javaman is configured to automatically update itself "
   		+ "when it is run if its log indicates enough time has passed since its last update. "
-  		+ " However, a manual update can also be initiated by typing [COMMAND] into the "
-  		+ "terminal.\n\nTo view help: type [COMMAND] into the terminal and a help blurb will "
+  		+ " However, a manual update can also be initiated by typing [update] into the "
+  		+ "terminal.\n\nTo view help: type [help] into the terminal and a help blurb will "
   		+ "be printed to it.";
   public static String noInternetConnectionMessage = "There is no network connection.  "
 		  + "Please connect to the internet so updates can complete.";
